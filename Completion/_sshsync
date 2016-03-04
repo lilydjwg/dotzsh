@@ -1,0 +1,20 @@
+#compdef sshsync
+
+_sshsync_items () {
+  grep -oP '(?<=^sync_)\w+(?=\s*\(\))' =sshsync
+}
+
+_sshsync () {
+  if [[ -z $commands[sshsync] ]]; then
+    _message "sshsync not available"
+    return 1
+  else
+    #TODO: complete with user@
+    _arguments \
+      ':remote:_hosts' \
+      ':what:($(_sshsync_items))'
+    return 0
+  fi
+}
+
+_sshsync

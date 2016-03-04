@@ -1,0 +1,5 @@
+# vim:se ft=zsh:
+typeset prefix='http_proxy=localhost: https_proxy=$http_proxy'
+
+BUFFER="$prefix $BUFFER"
+(( CURSOR = 21 ))
