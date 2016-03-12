@@ -117,7 +117,6 @@ compdef agg=ag 2>/dev/null
 compdef downgrade=pactree 2>/dev/null
 # not only pdf files
 compdef -d evince
-compdef whoneeds=pactree 2>/dev/null
 compdef _gnu_generic exa
 
 # 我的自动补全 {{{2
@@ -309,7 +308,6 @@ alias mytex=". ~/soft/context/tex/setuptex"
 (( $+commands[irb] )) && alias irb='irb -r irb/completion'
 (( $+commands[ccal] )) && alias ccal='ccal -ub'
 (( $+commands[zbarcam] )) && alias zbarcam='LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam'
-(( $+commands[tree] )) && alias tree='tree -CN'
 (( $+commands[ghc] )) && alias ghc='ghc -i$HOME/scripts/haskell/lib'
 (( $+commands[l] )) || alias l='locate'
 (( $+commands[lre] )) || alias lre='locate -b --regex'
