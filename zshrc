@@ -806,6 +806,6 @@ unset OS
 setopt nomatch
 return 0
 
-# Public link: http://lilydjwg.vim-cn.com/share/zshrc.txt
+# Public link: https://github.com/lilydjwg/dotzsh
 
 # vim:fdm=marker
