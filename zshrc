@@ -118,6 +118,7 @@ compdef downgrade=pactree 2>/dev/null
 # not only pdf files
 compdef -d evince
 compdef _gnu_generic exa
+compdef whoneeds=pactree 2>/dev/null
 
 # 我的自动补全 {{{2
 zstyle ':completion:*:*:pdf2png:*' file-patterns \
