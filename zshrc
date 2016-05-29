@@ -334,7 +334,7 @@ if [[ $_has_re -eq 1 ]] && \
       if command tmux has; then
         command tmux $@
       else
-        systemctl --user --scope tmux $@
+        systemd-run --user --scope tmux $@
       fi
     }
   fi
