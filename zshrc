@@ -324,6 +324,23 @@ alias mytex=". ~/soft/context/tex/setuptex"
 (( $+commands[mysql] )) && alias mysql='mysql --sigint-ignore'
 (( $+commands[diff-so-fancy] )) && alias diff-so-fancy='diff-so-fancy | less'
 
+# for systemd 230+
+# see https://github.com/tmux/tmux/issues/428
+if [[ $_has_re -eq 1 ]] && \
+  (( $+commands[tmux] )) && (( $+commands[systemctl] )); then
+  [[ $(systemctl --version) =~ 'systemd ([0-9]+)' ]] || true
+  if [[ $match -ge 229 ]]; then
+    tmux () {
+      if command tmux has; then
+        command tmux $@
+      else
+        systemctl --user --scope tmux $@
+      fi
+    }
+  fi
+  unset match
+fi
+
 alias winxp="VBoxManage startvm WinXP"
 alias winxp2="VBoxManage startvm WinXP_test"
 alias dmount="udisksctl mount --block-device"
