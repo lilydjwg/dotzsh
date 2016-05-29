@@ -329,7 +329,7 @@ alias mytex=". ~/soft/context/tex/setuptex"
 if [[ $_has_re -eq 1 ]] && \
   (( $+commands[tmux] )) && (( $+commands[systemctl] )); then
   [[ $(systemctl --version) =~ 'systemd ([0-9]+)' ]] || true
-  if [[ $match -ge 229 ]]; then
+  if [[ $match -ge 230 ]]; then
     tmux () {
       if command tmux has; then
         command tmux $@
