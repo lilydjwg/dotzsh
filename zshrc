@@ -551,9 +551,10 @@ shutdown () { #{{{2
   fi
 }
 killssh () { #{{{2 kill all ssh that using default master socket
-  local key=$1
-  local pids="$(netstat -nxlp 2>/dev/null | awk -v HOME=$HOME -v key=$key '{if(index($NF, HOME"/.ssh/master-"key) == 1){print $9}}' | grep -o '^[[:digit:]]\+')"
-  [[ -n $pids ]] && kill ${=pids}
+  for key in $@; do
+    local pids="$(netstat -nxlp 2>/dev/null | awk -v HOME=$HOME -v key=$key '{if(index($NF, HOME"/.ssh/master-"key) == 1){print $9}}' | grep -o '^[[:digit:]]\+')"
+    [[ -n $pids ]] && kill ${=pids}
+  done
 }
 
 _killssh_items () {
