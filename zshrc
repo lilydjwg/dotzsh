@@ -320,8 +320,6 @@ alias mytex=". ~/soft/context/tex/setuptex"
 (( $+commands[mutt] )) && alias mutt="GPG_AGENT_INFO= mutt"
 (( $+commands[openssl] )) && alias showcert='openssl x509 -text -noout -in'
 (( $+commands[trans] )) && alias trans='proxychains -q trans'
-(( $+commands[nvim] )) && alias nv=nvim
-(( $+commands[mysql] )) && alias mysql='mysql --sigint-ignore'
 (( $+commands[diff-so-fancy] )) && alias diff-so-fancy='diff-so-fancy | less'
 
 # for systemd 230+
