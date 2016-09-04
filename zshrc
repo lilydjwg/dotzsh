@@ -820,6 +820,19 @@ export SYSTEMD_LESS="${LESS#-}K"
 [[ -z $functions[j] && -f /usr/share/autojump/autojump.zsh ]] && source /usr/share/autojump/autojump.zsh
 [[ -z $functions[j] && -f ${_zdir}/.zsh/autojump.zsh ]] && source ${_zdir}/.zsh/autojump.zsh
 
+# 共用账户时的定制
+if [[ -n $ZDOTDIR ]]; then
+  export SHELL=/bin/zsh
+  [[ -f $ZDOTDIR/.tmux.conf ]] && alias tmux="tmux -f ~/lily/.tmux.conf -S ~/lily/.tmux.sock"
+  [[ -d $ZDOTDIR/bin ]] && path=($ZDOTDIR/bin $path)
+  [[ -f $ZDOTDIR/.vim/vimrc ]] && {
+    export MYVIMRC=$ZDOTDIR/.vim/vimrc
+    export VIMINIT="let &rtp='$ZDOTDIR/.vim,' . &rtp
+so $MYVIMRC"
+    export VIMTMP=$ZDOTDIR/tmpfs
+  }
+fi
+
 unset OS
 setopt nomatch
 return 0
