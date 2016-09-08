@@ -548,15 +548,27 @@ shutdown () { #{{{2
     # dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
   fi
 }
-killssh () { #{{{2 kill all ssh that using default master socket
+killssh () { #{{{2 kill ssh that using default master socket
   for key in $@; do
-    local pids="$(netstat -nxlp 2>/dev/null | awk -v HOME=$HOME -v key=$key '{if(index($NF, HOME"/.ssh/master-"key) == 1){print $9}}' | grep -o '^[[:digit:]]\+')"
+    local pids="$(netstat -nxlp 2>/dev/null | awk -v dir=$(_killssh_dir) -v key=$key \
+      '{if(index($NF, dir"/master-"key) == 1){print $9}}' | grep -o '^[[:digit:]]\+')"
     [[ -n $pids ]] && kill ${=pids}
   done
 }
 
+_killssh_dir () {
+  local dir
+  if [[ -n $XDG_RUNTIME_DIR && -d $XDG_RUNTIME_DIR/ssh ]]; then
+    dir=$XDG_RUNTIME_DIR/ssh
+  else
+    dir=$HOME/.ssh
+  fi
+  print $dir
+}
+
 _killssh_items () {
-  netstat -nxlp 2>/dev/null | awk -v HOME=$HOME 'BEGIN{P=HOME"/.ssh/master-";L=length(P);}{if(index($NF, P) == 1){a=substr($NF,L+1);sub(/\.[[:alnum:]]+$/,"",a);print a}}'
+  netstat -nxlp 2>/dev/null | awk -v dir=$(_killssh_dir) \
+    'BEGIN{P=dir"/master-";L=length(P);}{if(index($NF, P) == 1){a=substr($NF,L+1);sub(/\.[[:alnum:]]+$/,"",a);print a}}'
 }
 
 _killssh () {
