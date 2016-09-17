@@ -438,7 +438,7 @@ breakln () { #断掉软链接 {{{2
   for f in $*; do
     tgt=$(readlink "$f")
     unlink "$f"
-    cp -r "$tgt" "$f"
+    cp -rL "$tgt" "$f"
   done
 }
 if [[ $TERM == screen* ]]; then # {{{2 设置标题
