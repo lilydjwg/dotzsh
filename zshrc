@@ -830,6 +830,8 @@ export SYSTEMD_LESS="${LESS#-}K"
 [[ -z $functions[j] && -f /etc/profile.d/autojump.zsh ]] && source /etc/profile.d/autojump.zsh
 # Debian Wheezy
 [[ -z $functions[j] && -f /usr/share/autojump/autojump.zsh ]] && source /usr/share/autojump/autojump.zsh
+# FreeBSD
+[[ -z $functions[j] && -f /usr/local/share/autojump/autojump.zsh ]] && source /usr/local/share/autojump/autojump.zsh
 [[ -z $functions[j] && -f ${_zdir}/.zsh/autojump.zsh ]] && source ${_zdir}/.zsh/autojump.zsh
 
 # 共用账户时的定制
