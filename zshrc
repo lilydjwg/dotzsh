@@ -316,6 +316,7 @@ alias mytex=". ~/soft/context/tex/setuptex"
 (( $+commands[2to3] )) && alias py2to3="2to3 -w --no-diffs -n"
 (( $+commands[you-get] )) && alias you-getp="you-get -p mpv"
 (( $+commands[git] )) && alias gitc="git clone"
+(( $+commands[git] )) && alias git-export="git daemon --export-all --base-path= --reuseaddr --"
 # GnuPG 2.1 and mutt don't play well
 (( $+commands[mutt] )) && alias mutt="GPG_AGENT_INFO= mutt"
 (( $+commands[openssl] )) && alias showcert='openssl x509 -text -noout -in'
