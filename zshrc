@@ -482,7 +482,7 @@ fi
 ptyrun () { # 使用伪终端代替管道，对 ls 这种“顽固分子”有效 {{{2
   local ptyname=pty-$$
   zmodload zsh/zpty
-  zpty $ptyname "noglob $@"
+  zpty $ptyname "${(q)@}"
   if [[ ! -t 1 ]]; then
     setopt local_traps
     trap '' INT
