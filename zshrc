@@ -322,6 +322,7 @@ alias mytex=". ~/soft/context/tex/setuptex"
 (( $+commands[openssl] )) && alias showcert='openssl x509 -text -noout -in'
 (( $+commands[trans] )) && alias trans='proxychains -q trans'
 (( $+commands[diff-so-fancy] )) && alias diff-so-fancy='diff-so-fancy | less'
+[[ -d /home/startcom ]] && alias startcom='sudo machinectl shell --setenv=LANGUAGE=$LANGUAGE --setenv=LANG=$LANG --setenv=DISPLAY=$DISPLAY --setenv=GTK_IM_MODULE=xim --setenv=QT_IM_MODULE=xim --setenv=XMODIFIERS=$XMODIFIERS startcom@ /usr/bin/firefox --no-remote'
 
 # for systemd 230+
 # see https://github.com/tmux/tmux/issues/428
