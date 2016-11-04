@@ -117,7 +117,7 @@ compdef agg=ag 2>/dev/null
 compdef downgrade=pactree 2>/dev/null
 # not only pdf files
 compdef -d evince
-compdef _gnu_generic exa
+compdef _gnu_generic exa pamixer
 compdef whoneeds=pactree 2>/dev/null
 
 # 我的自动补全 {{{2
