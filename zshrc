@@ -499,6 +499,9 @@ clipboard2qr () { # 剪贴板数据到QR码 {{{2
   echo $data
   echo $data | qrencode -t UTF8
 }
+screen2clipboard () { # 截图到剪贴板 {{{2
+  import png:- | xclip -i -selection clipboard -t image/png
+}
 mvgb () { # 文件名从 GB 转码，带确认{{{2
   for i in $*; do
     new="`echo $i|iconv -f utf8 -t latin1|iconv -f gbk`"
