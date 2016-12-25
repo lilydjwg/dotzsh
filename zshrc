@@ -836,6 +836,11 @@ export SYSTEMD_LESS="${LESS#-}K"
 # FreeBSD
 [[ -z $functions[j] && -f /usr/local/share/autojump/autojump.zsh ]] && source /usr/local/share/autojump/autojump.zsh
 [[ -z $functions[j] && -f ${_zdir}/.zsh/autojump.zsh ]] && source ${_zdir}/.zsh/autojump.zsh
+# if autojump loads but the directory is readonly, remove the chpwd hook
+if [[ ${chpwd_functions[(i)autojump_chpwd]} -le ${#chpwd_functions} && \
+  -d ~/.local/share/autojump && ! -w ~/.local/share/autojump ]]; then
+  chpwd_functions[(i)autojump_chpwd]=()
+fi
 
 # 共用账户时的定制
 if [[ -n $ZDOTDIR ]]; then
