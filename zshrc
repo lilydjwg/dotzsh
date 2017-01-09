@@ -773,9 +773,9 @@ export GST_ID3V2_TAG_ENCODING=GB18030:UTF-8
 if [[ -n $DISPLAY && -z $SSH_CONNECTION ]]; then
   export BROWSER=firefox
   export wiki_browser=firefox
-  export AGV_EDITOR='vv "$file:$line:$col"'
+  export AGV_EDITOR='vv ''$file:$line:$col'''
 else
-  export AGV_EDITOR='vim +"call setpos(\".\", [0, $line, $col, 0])" "$file"'
+  export AGV_EDITOR='vim +"call setpos(\".\", [0, $line, $col, 0])" ''$file'''
 fi
 if [[ -n $DISPLAY || -n $SSH_CONNECTION ]]; then
   # 让 less 将粗体/下划线等显示为彩色
