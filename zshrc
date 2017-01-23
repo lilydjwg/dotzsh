@@ -145,6 +145,10 @@ bindkey '^X^E' edit-command-line
 zle -C complete-file menu-expand-or-complete _generic
 zstyle ':completion:complete-file:*' completer _files
 
+# https://zhimingwang.org/blog/2015-09-21-zsh-51-and-bracketed-paste.html
+autoload -Uz bracketed-paste-url-magic
+zle -N bracketed-paste bracketed-paste-url-magic
+
 autoload -Uz url-quote-magic
 zle -N self-insert url-quote-magic
 toggle-uqm () {
