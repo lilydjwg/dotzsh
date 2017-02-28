@@ -105,6 +105,10 @@ _cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/zsh
 zstyle ':completion:*' cache-path $_cache_dir
 unset _cache_dir
 
+# complete user-commands for git-*
+# https://pbrisbin.com/posts/deleting_git_tags_with_style/
+zstyle ':completion:*:*:git:*' user-commands ${${(M)${(k)commands}:#git-*}/git-/}
+
 compdef pkill=killall
 compdef pgrep=killall
 compdef vman=man
