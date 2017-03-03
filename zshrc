@@ -464,6 +464,8 @@ elif [[ $TERM == screen* ]]; then
   else
     cursorcolor () { echo -ne "\eP\e]12;$*\007\e\\" }
   fi
+elif [[ $TERM == tmux* ]]; then
+  cursorcolor () { echo -ne "\ePtmux;\e\e]12;$*\007\e\\" }
 fi
 if [[ -d ${VIMTMP:=~/tmpfs} ]]; then # {{{2 gcc & g++
   gcc () { # {{{3
