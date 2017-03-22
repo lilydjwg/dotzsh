@@ -435,7 +435,7 @@ fi
 vman () { vim +"set ft=man" +"Man $*" }
 song () { find ~/音乐 -iname "*$1*" }
 mvpc () { mv $1 "`echo $1|ascii2uni -a J`" } # 将以 %HH 表示的文件名改正常
-nocolor () { sed -r "s:\x1b\[[0-9;]*[mK]::g" }
+nocolor () { sed -r 's:\x1b\[[0-9;]*[mK]::g;s:[\r\x0f]::g' }
 sshpubkey () { tee < ~/.ssh/id_*.pub(om[1]) >(xsel -i) }
 rmempty () { #删除空文件 {{{2
   for i; do
@@ -467,21 +467,21 @@ elif [[ $TERM == screen* ]]; then
 elif [[ $TERM == tmux* ]]; then
   cursorcolor () { echo -ne "\ePtmux;\e\e]12;$*\007\e\\" }
 fi
-if [[ -d ${VIMTMP:=~/tmpfs} ]]; then # {{{2 gcc & g++
-  gcc () { # {{{3
-    errfile=$VIMTMP/.error
-    command gcc -g -Wall "$@" >$errfile 2>&1
-    ret=$?
-    cat $errfile
-    return $ret
+if [[ -d ${VIMTMP:=~/tmpfs} ]]; then # {{{2 record errors from compilers
+  # problems:
+  #   stdout & stderr mixed
+  #   return code
+  _error_command () {
+    eval "
+      $1 () {
+        errfile=\$VIMTMP/.error
+        ptyrun command $@ \"\$@\" > >(tee >(nocolor >\$errfile))
+      }
+    "
   }
-  g++ () { # {{{3
-    errfile=$VIMTMP/.error
-    command g++ -g -Wall "$@" >$errfile 2>&1
-    ret=$?
-    cat $errfile
-    return $ret
-  }
+  # _error_command gcc -g -Wall
+  # _error_command g++ -g -Wall
+  # _error_command cargo
 fi
 2mp3 () { # 转换成 mp3 格式 {{{2
   [[ $# -ne 1 ]] && echo "Usage: $0 FILE" && return 1
