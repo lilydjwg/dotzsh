@@ -450,7 +450,7 @@ breakln () { #断掉软链接 {{{2
     cp -rL "$tgt" "$f"
   done
 }
-if [[ $TERM == screen* ]]; then # {{{2 设置标题
+if [[ $TERM == screen* || $TERM == tmux* ]]; then # {{{2 设置标题
   # 注：不支持中文
   title () { echo -ne "\ek$*\e\\" }
 else
