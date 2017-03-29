@@ -712,7 +712,7 @@ if (( $+commands[git] )); then
         # need to substitute single ' with double ''
         print "typeset -g _current_branch='${_current_branch//''''/''}'"
       }
-      disown %{\ _br
+      disown %{\ _br 2>/dev/null
       exec {vcs_info_fd}<&p
       # wait 0.1 seconds before showing up to avoid unnecessary double update
       # precmd functions are called *after* prompt is expanded, and we can't call
