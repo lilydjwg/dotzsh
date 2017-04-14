@@ -149,21 +149,24 @@ bindkey '^X^E' edit-command-line
 zle -C complete-file menu-expand-or-complete _generic
 zstyle ':completion:complete-file:*' completer _files
 
-# https://zhimingwang.org/blog/2015-09-21-zsh-51-and-bracketed-paste.html
+# https://archive.zhimingwang.org/blog/2015-09-21-zsh-51-and-bracketed-paste.html
 autoload -Uz bracketed-paste-url-magic
 zle -N bracketed-paste bracketed-paste-url-magic
 
-autoload -Uz url-quote-magic
-zle -N self-insert url-quote-magic
-toggle-uqm () {
-  if zle -l self-insert; then
-    zle -A .self-insert self-insert && zle -M "switched to self-insert"
-  else
-    zle -N self-insert url-quote-magic && zle -M "switched to url-quote-magic"
-  fi
-}
-zle -N toggle-uqm
-bindkey '^X$' toggle-uqm
+# zsh 5.1+ uses bracketed-paste-url-magic
+if [[ $ZSH_VERSION =~ '^[0-4]\.' || $ZSH_VERSION =~ '^5\.0\.[0-9]' ]]; then
+  autoload -Uz url-quote-magic
+  zle -N self-insert url-quote-magic
+  toggle-uqm () {
+    if zle -l self-insert; then
+      zle -A .self-insert self-insert && zle -M "switched to self-insert"
+    else
+      zle -N self-insert url-quote-magic && zle -M "switched to url-quote-magic"
+    fi
+  }
+  zle -N toggle-uqm
+  bindkey '^X$' toggle-uqm
+fi
 
 # better than copy-prev-word
 bindkey "^[^_" copy-prev-shell-word
