@@ -302,7 +302,7 @@ fi
 if [[ $OS == 'Linux' || $OS == 'FreeBSD' ]]; then
   alias grep='grep --color=auto'
 fi
-alias n='nautilus --no-desktop'
+alias n='thunar'
 alias py='python3'
 alias svim="vim -i NONE"
 alias rv='EDITOR="vim --servername GVIM --remote-tab-wait"'
