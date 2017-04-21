@@ -93,8 +93,9 @@ zstyle ':completion:*' group-name ''
 # 歧义字符加粗（使用「true」来加下划线）；会导致原本的高亮失效
 # http://www.thregr.org/~wavexx/rnd/20141010-zsh_show_ambiguity/
 # zstyle ':completion:*' show-ambiguity '1;37'
+# _extensions 为 *. 补全扩展名
 # 在最后尝试使用文件名
-zstyle ':completion:*' completer _complete _match _approximate _expand_alias _ignored _files
+zstyle ':completion:*' completer _complete _extensions _match _approximate _expand_alias _ignored _files
 # 修正大小写
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 zstyle -e ':completion:*' special-dirs \
