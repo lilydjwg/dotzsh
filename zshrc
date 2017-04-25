@@ -95,7 +95,11 @@ zstyle ':completion:*' group-name ''
 # zstyle ':completion:*' show-ambiguity '1;37'
 # _extensions 为 *. 补全扩展名
 # 在最后尝试使用文件名
-zstyle ':completion:*' completer _complete _extensions _match _approximate _expand_alias _ignored _files
+if [[ $ZSH_VERSION =~ '^[0-4]\.' || $ZSH_VERSION =~ '^5\.0\.[0-5]' ]]; then
+  zstyle ':completion:*' completer _complete _match _approximate _expand_alias _ignored _files
+else
+  zstyle ':completion:*' completer _complete _extensions _match _approximate _expand_alias _ignored _files
+fi
 # 修正大小写
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 zstyle -e ':completion:*' special-dirs \
