@@ -112,13 +112,13 @@ zstyle ':completion:*:*:git:*' user-commands ${${(M)${(k)commands}:#git-*}/git-/
 
 compdef pkill=killall
 compdef pgrep=killall
-compdef vman=man
 compdef proxychains=command
 compdef watch=command
 compdef rlwrap=command
 compdef ptyless=command
 compdef grc=command
 compdef agg=ag 2>/dev/null
+compdef rgg=rg 2>/dev/null
 compdef downgrade=pactree 2>/dev/null
 # not only pdf files
 compdef -d evince
@@ -436,7 +436,6 @@ else
   (( $+commands[strace] )) && strace () { (command strace "$@" 3>&1 1>&2 2>&3) | vim -R - }
   (( $+commands[ltrace] )) && ltrace () { (command ltrace "$@" 3>&1 1>&2 2>&3) | vim -R - }
 fi
-vman () { vim +"set ft=man" +"Man $*" }
 song () { find ~/音乐 -iname "*$1*" }
 mvpc () { mv $1 "`echo $1|ascii2uni -a J`" } # 将以 %HH 表示的文件名改正常
 nocolor () { sed -r 's:\x1b\[[0-9;]*[mK]::g;s:[\r\x0f]::g' }
