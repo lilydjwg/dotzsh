@@ -1,3 +1,0 @@
-#compdef whoneeds
-
-_pactree "$@"
