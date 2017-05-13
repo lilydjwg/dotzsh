@@ -664,7 +664,10 @@ export -TU PYTHONPATH pythonpath 2>/dev/null
 export -U PATH
 # don't export FPATH
 typeset -U FPATH
-[[ -z $MAKEFLAGS ]] && (( $+commands[nproc] )) && export MAKEFLAGS=-j$(nproc)
+[[ -z $MAKEFLAGS ]] && (( $+commands[nproc] )) && {
+  local n=$(nproc)
+  export MAKEFLAGS="-j$n -l$n"
+}
 [[ -z $EDITOR ]] && (( $+commands[vim] )) && export EDITOR=vim
 
 [[ -f $_zdir/.zsh/zshrc.local ]] && source $_zdir/.zsh/zshrc.local
