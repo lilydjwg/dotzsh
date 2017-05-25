@@ -90,8 +90,6 @@ zstyle ':completion:*:manuals.*'  insert-sections   true
 zstyle ':completion:*' menu select
 # 分组显示
 zstyle ':completion:*' group-name ''
-# 接受路径中已经匹配的中间项，这将支持 .zfs 隐藏目录
-zstyle ':completion:*' accept-exact-dirs true
 # 歧义字符加粗（使用「true」来加下划线）；会导致原本的高亮失效
 # http://www.thregr.org/~wavexx/rnd/20141010-zsh_show_ambiguity/
 # zstyle ':completion:*' show-ambiguity '1;37'
@@ -145,6 +143,13 @@ zstyle ':completion:*:*:feh:*' file-patterns '*.{png,gif,jpg,svg}:images:images 
 zstyle ':completion:*:*:sxiv:*' file-patterns '*.{png,gif,jpg}:images:images *(-/):directories:directories'
 zstyle ':completion:*:*:timidity:*' file-patterns '*.mid'
 
+# .zfs handling {{{2
+_get_zfs_fake_files () {
+  reply=($(awk -vOFS=: -vORS=' ' '$9 == "zfs" { print $5, ".zfs" }' /proc/self/mountinfo))
+}
+zstyle -e ':completion:*' fake-files _get_zfs_fake_files
+# 接受路径中已经匹配的中间项，这将支持 .zfs 隐藏目录
+# zstyle ':completion:*' accept-exact-dirs true
 # 命令行编辑{{{1
 bindkey -e
 
