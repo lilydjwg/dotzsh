@@ -144,10 +144,12 @@ zstyle ':completion:*:*:sxiv:*' file-patterns '*.{png,gif,jpg}:images:images *(-
 zstyle ':completion:*:*:timidity:*' file-patterns '*.mid'
 
 # .zfs handling {{{2
-_get_zfs_fake_files () {
-  reply=($(awk -vOFS=: -vORS=' ' '$9 == "zfs" { print $5, ".zfs" }' /proc/self/mountinfo))
-}
-zstyle -e ':completion:*' fake-files _get_zfs_fake_files
+if [[ -f /proc/self/mountinfo ]]; then
+  _get_zfs_fake_files () {
+    reply=($(awk -vOFS=: -vORS=' ' '$9 == "zfs" { print $5, ".zfs" }' /proc/self/mountinfo))
+  }
+  zstyle -e ':completion:*' fake-files _get_zfs_fake_files
+fi
 # 接受路径中已经匹配的中间项，这将支持 .zfs 隐藏目录
 # zstyle ':completion:*' accept-exact-dirs true
 # 命令行编辑{{{1
