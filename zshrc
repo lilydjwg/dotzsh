@@ -146,7 +146,7 @@ zstyle ':completion:*:*:timidity:*' file-patterns '*.mid'
 # .zfs handling {{{2
 if [[ -f /proc/self/mountinfo ]]; then
   _get_zfs_fake_files () {
-    reply=($(awk -vOFS=: -vORS=' ' '$9 == "zfs" { print $5, ".zfs" }' /proc/self/mountinfo))
+    reply=($(awk -vOFS=: -vORS=' ' '$9 == "zfs" && $7 !~ /^master:/ { print $5, ".zfs" }' /proc/self/mountinfo))
   }
   zstyle -e ':completion:*' fake-files _get_zfs_fake_files
 fi
