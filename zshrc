@@ -450,7 +450,7 @@ else
   (( $+commands[ltrace] )) && ltrace () { (command ltrace "$@" 3>&1 1>&2 2>&3) | vim -R - }
 fi
 song () { find ~/音乐 -iname "*$1*" }
-mvpc () { mv $1 "`echo $1|ascii2uni -a J`" } # 将以 %HH 表示的文件名改正常
+mvpc () { mv -- $1 "`echo $1|ascii2uni -a J|tr '/' '-'`" } # 将以 %HH 表示的文件名改正常
 nocolor () { sed -r 's:\x1b\[[0-9;]*[mK]::g;s:[\r\x0f]::g' }
 sshpubkey () { tee < ~/.ssh/id_*.pub(om[1]) >(xsel -i) }
 rmempty () { #删除空文件 {{{2
