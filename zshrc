@@ -580,7 +580,7 @@ shutdown () { #{{{2
 }
 killssh () { #{{{2 kill ssh that using default master socket
   local keys
-  if [[ $# -le 1 ]]; then
+  if [[ $# -lt 1 ]]; then
     keys=('')
   else
     keys=$@
