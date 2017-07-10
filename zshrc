@@ -347,6 +347,12 @@ alias mytex=". ~/soft/context/tex/setuptex"
 (( $+commands[diff-so-fancy] )) && alias diff-so-fancy='diff-so-fancy | less'
 [[ -d /home/startcom ]] && alias startcom='sudo machinectl shell --setenv=LANGUAGE=$LANGUAGE --setenv=LANG=$LANG --setenv=DISPLAY=$DISPLAY --setenv=GTK_IM_MODULE=xim --setenv=QT_IM_MODULE=xim --setenv=XMODIFIERS=$XMODIFIERS startcom@ /usr/bin/firefox --no-remote'
 (( $+commands[nvim] )) && alias nv=nvim
+# take screenshot to stdout (PNG)
+if (( $+commands[maim] )); then
+  alias screenshot="maim -s -l -c 255,0,255,0.15 -k -n 2"
+elif (( $+commands[import] )); then
+  alias screenshot="import png:-"
+fi
 
 # for systemd 230+
 # see https://github.com/tmux/tmux/issues/428
@@ -525,7 +531,7 @@ clipboard2qr () { # 剪贴板数据到QR码 {{{2
   echo $data | qrencode -t UTF8
 }
 screen2clipboard () { # 截图到剪贴板 {{{2
-  import png:- | xclip -i -selection clipboard -t image/png
+  screenshot | xclip -i -selection clipboard -t image/png
 }
 mvgb () { # 文件名从 GB 转码，带确认{{{2
   for i in $*; do
