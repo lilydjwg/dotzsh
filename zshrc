@@ -567,11 +567,17 @@ pid () { #{{{2
   done
   return $s
 }
-s () { # 快速查找当前目录下的文件 {{{2
-  name=$1
-  shift
-  find . -name "*$name*" "$@"
-}
+# 快速查找当前目录下的文件 {{{2
+# rg is 3x faster than ag, and find 2x
+if (( $+commands[rg] )) then
+  s () {
+    rg --files -g "*$1*"
+  }
+else
+  s () {
+    find . -name "*$1*"
+  }
+fi
 en () { # 使用 DNS TXT 记录的词典 {{{2
   # https://github.com/chuangbo/jianbing-dictionary-dns
   dig "$*.jianbing.org" +short txt | perl -pe's/\\(\d{1,3})/chr $1/eg; s/(^"|"$)//g'
