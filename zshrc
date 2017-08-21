@@ -310,6 +310,8 @@ if [[ $OS == 'Linux' ]]; then
   alias ls='ls --color=auto'
 elif [[ $OS == 'FreeBSD' ]]; then
   alias ls='ls -G'
+elif (( $+commands[colorls] )); then
+  alias ls='colorls -G'
 else
   alias ls='ls -F'
 fi
