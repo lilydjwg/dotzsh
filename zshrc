@@ -356,6 +356,14 @@ elif (( $+commands[import] )); then
   alias screenshot="import png:-"
 fi
 
+# grc aliases
+if (( $+aliases[colourify] )); then
+  # default is better
+  unalias gcc g++ 2>/dev/null || true
+  # bug
+  unalias mtr     2>/dev/null || true
+fi
+
 # for systemd 230+
 # see https://github.com/tmux/tmux/issues/428
 if [[ $_has_re -eq 1 ]] && \
