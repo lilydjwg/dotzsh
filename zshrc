@@ -282,9 +282,9 @@ sudo-command-line() {
     [[ $BUFFER != sudo\ * ]] && {
       typeset -a bufs
       bufs=(${(z)BUFFER})
-      if (( $+aliases[$bufs[1]] )); then
-        bufs[1]=$aliases[$bufs[1]]
-      fi
+      while (( $+aliases[$bufs[1]] )); do
+        bufs[1,1]=(${(z)aliases[$bufs[1]]})
+      done
       bufs=(sudo $bufs)
       BUFFER=$bufs
     }
