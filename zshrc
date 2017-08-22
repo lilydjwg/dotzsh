@@ -462,8 +462,8 @@ if (( $+commands[vimtrace] )); then
   (( $+commands[strace] )) && alias strace='vimtrace strace'
   (( $+commands[ltrace] )) && alias ltrace='vimtrace ltrace'
 else
-  (( $+commands[strace] )) && strace () { (command strace "$@" 3>&1 1>&2 2>&3) | vim -R - }
-  (( $+commands[ltrace] )) && ltrace () { (command ltrace "$@" 3>&1 1>&2 2>&3) | vim -R - }
+  (( $+commands[strace] )) && function strace () { (command strace "$@" 3>&1 1>&2 2>&3) | vim -R - }
+  (( $+commands[ltrace] )) && function ltrace () { (command ltrace "$@" 3>&1 1>&2 2>&3) | vim -R - }
 fi
 song () { find ~/音乐 -iname "*$1*" }
 mvpc () { mv -- $1 "`echo $1|ascii2uni -a J|tr '/' '-'`" } # 将以 %HH 表示的文件名改正常
