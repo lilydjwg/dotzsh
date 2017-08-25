@@ -543,6 +543,12 @@ clipboard2qr () { # 剪贴板数据到QR码 {{{2
 screen2clipboard () { # 截图到剪贴板 {{{2
   screenshot | xclip -i -selection clipboard -t image/png
 }
+clipboard_bmp2png () { # 将剪贴板中的图片从 bmp 转到 png。QQ 会使用 bmp
+  xclip -selection clipboard -o -t image/bmp | convert - png:- | xclip -i -selection clipboard -t image/png
+}
+clipboard_png2bmp () { # 将剪贴板中的图片从 png 转到 bmp。QQ 会使用 bmp
+  xclip -selection clipboard -o -t image/png | convert - bmp:- | xclip -i -selection clipboard -t image/bmp
+}
 mvgb () { # 文件名从 GB 转码，带确认{{{2
   for i in $*; do
     new="`echo $i|iconv -f utf8 -t latin1|iconv -f gbk`"
