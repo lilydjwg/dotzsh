@@ -360,8 +360,10 @@ fi
 if (( $+aliases[colourify] )); then
   # default is better
   unalias gcc g++ 2>/dev/null || true
-  # bug
+  # bug: https://github.com/garabik/grc/issues/72
   unalias mtr     2>/dev/null || true
+  # buffering issues: https://github.com/garabik/grc/issues/25
+  unalias ping    2>/dev/null || true
 fi
 
 # for systemd 230+
