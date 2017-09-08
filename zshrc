@@ -344,7 +344,13 @@ alias mytex=". ~/soft/context/tex/setuptex"
 (( $+commands[you-get] )) && alias you-getp="you-get -p mpv"
 (( $+commands[git] )) && alias gitc="git clone"
 (( $+commands[git] )) && alias git-export="git daemon --export-all --base-path= --reuseaddr --"
-(( $+commands[openssl] )) && alias showcert='openssl x509 -text -noout -in'
+(( $+commands[openssl] )) && {
+  alias showcert='openssl x509 -text -noout -in'
+  showcert_for_domain () {
+    local domain=$1
+    openssl s_client -connect $domain:443 -servername $domain <<<''
+  }
+}
 (( $+commands[trans] )) && alias trans='proxychains -q trans'
 (( $+commands[diff-so-fancy] )) && alias diff-so-fancy='diff-so-fancy | less'
 [[ -d /home/startcom ]] && alias startcom='sudo machinectl shell --setenv=LANGUAGE=$LANGUAGE --setenv=LANG=$LANG --setenv=DISPLAY=$DISPLAY --setenv=GTK_IM_MODULE=xim --setenv=QT_IM_MODULE=xim --setenv=XMODIFIERS=$XMODIFIERS startcom@ /usr/bin/firefox --no-remote'
