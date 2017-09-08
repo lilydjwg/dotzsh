@@ -283,7 +283,11 @@ sudo-command-line() {
       typeset -a bufs
       bufs=(${(z)BUFFER})
       while (( $+aliases[$bufs[1]] )); do
-        bufs[1,1]=(${(z)aliases[$bufs[1]]})
+        local expanded=(${(z)aliases[$bufs[1]]})
+        bufs[1,1]=($expanded)
+        if [[ $bufs[1] == $expanded[1] ]]; then
+          break
+        fi
       done
       bufs=(sudo $bufs)
       BUFFER=$bufs
