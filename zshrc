@@ -461,6 +461,7 @@ hash -d ff="$HOME/.mozilla/firefox/profile"
 # 来自 http://roylez.heroku.com/2010/03/06/zsh-recent-file-alias.html
 alias -g NN="*(oc[1])"
 alias -g NNF="*(oc[1].)"
+alias -g NND="*(oc[1]/)"
 alias -g NUL="/dev/null"
 alias -g XS='"$(xsel)"'
 alias -g ANYF='**/*[^~](.)'
