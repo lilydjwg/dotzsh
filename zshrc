@@ -365,6 +365,11 @@ if (( $+commands[maim] )); then
 elif (( $+commands[import] )); then
   alias screenshot="import png:-"
 fi
+(( $+commands[exa] )) && {
+  xtree () {
+    exa -Tl --color=always "$@" | less
+  }
+}
 
 # grc aliases
 if (( $+aliases[colourify] )); then
