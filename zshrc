@@ -388,10 +388,11 @@ if [[ $_has_re -eq 1 ]] && \
   [[ $(systemctl --version) =~ 'systemd ([0-9]+)' ]] || true
   if [[ $match -ge 230 ]]; then
     tmux () {
-      if command tmux has; then
+      if command tmux has 2>/dev/null; then
         command tmux $@
       else
-        systemd-run --user --scope --unit=tmux tmux $@
+        systemctl --user start tmux
+        command tmux $@
       fi
     }
   fi
