@@ -906,6 +906,8 @@ AUTOJUMP_KEEP_SYMLINKS=1
 export LESS="-FRXM"
 # default has -S
 export SYSTEMD_LESS="${LESS#-}K"
+# git-subrepo completer needs this:
+GIT_SUBREPO_ROOT=/
 
 # 其它 {{{1
 
