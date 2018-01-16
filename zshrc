@@ -279,7 +279,7 @@ bindkey "\eW" zsh-backward-kill-word
 # Esc-Esc 在当前/上一条命令前插入 sudo {{{2
 sudo-command-line() {
     [[ -z $BUFFER ]] && zle up-history
-    [[ $BUFFER != sudo\ * ]] && {
+    [[ $BUFFER != sudo\ * && $UID -ne 0 ]] && {
       typeset -a bufs
       bufs=(${(z)BUFFER})
       while (( $+aliases[$bufs[1]] )); do
