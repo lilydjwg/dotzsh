@@ -406,7 +406,6 @@ alias ren="vim +'Ren'"
 alias topnum="ps -e|sort -k4|awk '{print \$4}'|uniq -c|sort -n|tail"
 alias soul="mplayer -really-quiet -nolirc -loop 0 ~/音乐/_纯音乐/忧伤还是快乐.mp3"
 alias xcp="rsync -aviHAXKhP --delete --exclude='*~' --exclude=__pycache__"
-alias mozrepl='socat readline tcp:127.0.0.1:4242'
 alias nonet="HTTP_PROXY='http://localhost:1' HTTPS_PROXY='http://localhost:1' FTP_PROXY='http://localhost:1' http_proxy='http://localhost:1' https_proxy='http://localhost:1' ftp_proxy='http://localhost:1'"
 alias fromgbk="iconv -t latin1 | iconv -f gb18030"
 alias swaptop='watch -n 1 "swapview | tail -\$((\$LINES - 2)) | cut -b -\$COLUMNS"'
