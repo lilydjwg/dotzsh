@@ -589,6 +589,7 @@ iip () { #{{{2
 pid () { #{{{2
   s=0
   for i in $*; do
+    i=${i/,/}
     echo -n "$i: "
     r=$(cat /proc/$i/cmdline|tr '\0' ' ' 2>/dev/null)
     if [[ $? -ne 0 ]]; then
