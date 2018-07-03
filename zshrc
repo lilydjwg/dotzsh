@@ -398,6 +398,7 @@ if [[ $_has_re -eq 1 ]] && \
   unset match
 fi
 
+alias nicest="nice -n19 ionice -c3"
 alias winxp="VBoxManage startvm WinXP"
 alias winxp2="VBoxManage startvm WinXP_test"
 alias dmount="udisksctl mount --block-device"
