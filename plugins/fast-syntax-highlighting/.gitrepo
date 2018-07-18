@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:zdharma/fast-syntax-highlighting.git
+	branch = master
+	commit = edf7ac5c1e61c505201385846361fe3c2b69b31b
+	parent = 494c08bb4bc52ed5927c52676d39065b255641c5
+	method = merge
+	cmdver = 0.4.0

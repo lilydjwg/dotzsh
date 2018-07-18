@@ -1,0 +1,184 @@
+# -*- mode: sh; sh-indentation: 4; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
+# Copyright (c) 2018 Sebastian Gniazdowski
+#
+# Theme support using ini-files.
+#
+
+zmodload zsh/zutil 2>/dev/null
+
+setopt localoptions extendedglob
+
+local OPT_HELP OPT_VERBOSE OPT_QUIET OPT_RESET OPT_LIST OPT_TEST OPT_SECONDARY
+local -A opthash
+zparseopts -E -D -A opthash h -help v -verbose q -quiet r -reset l -list t -test -secondary || { echo "Improper options given, see help (-h/--help)"; return 1; }
+
+(( ${+opthash[-h]} + ${+opthash[--help]} ))    && OPT_HELP="-h"
+(( ${+opthash[-v]} + ${+opthash[--verbose]} )) && OPT_VERBOSE="-v"
+(( ${+opthash[-q]} + ${+opthash[--quiet]} ))   && OPT_QUIET="-q"
+(( ${+opthash[-r]} + ${+opthash[--reset]} ))   && OPT_RESET="-r"
+(( ${+opthash[-l]} + ${+opthash[--list]} ))    && OPT_LIST="-l"
+(( ${+opthash[-t]} + ${+opthash[--test]} ))    && OPT_TEST="-t"
+(( ${+opthash[--secondary]} )) && OPT_SECONDARY="--secondary"
+
+[[ -n "$OPT_RESET" ]] && { command rm -f "$FAST_BASE_DIR"/{current_theme.zsh,secondary_theme.zsh}; [[ -z "$OPT_QUIET" ]] && print "Reset done (no theme is now set)"; return 0; }
+
+[[ -n "$OPT_LIST" ]] && {
+    print -r -- "Available themes:"
+    print -rl -- "$FAST_BASE_DIR"/themes/*.ini(:t:r)
+    return 0
+}
+
+[[ -n "$OPT_HELP" ]] && {
+    print -r -- "Usage: fast-theme [-h/--help] [-v/--verbose] [-q/--quiet] [-t/--test] <theme-name>"
+    print -r -- "       fast-theme [-r/--reset] [-l/--list]"
+    print -r -- ""
+    print -r -- "Default action (after providing <theme-name>) is to switch current session"
+    print -r -- "and any future sessions to the new theme."
+    print -r -- ""
+    print -r -- "-r/--reset     - unset any theme, use default highlighting (requires restart)"
+    print -r -- "-l/--list      - list names of available themes"
+    print -r -- "-t/--test      - show test block of code after switching theme"
+    return 0
+}
+
+[[ -z "$1" ]] && { print -u2 "Provide a theme (its name) to switch to, aborting (see -h/--help)"; return 1; }
+[[ ! -f "$FAST_BASE_DIR/themes/$1.ini" ]] && { print -u2 "No such theme \`$1', aborting"; return 1; }
+[[ ! -r "$FAST_BASE_DIR/themes/$1.ini" ]] && { print -u2 "Theme \`$1' unreadable, aborting"; return 1; }
+
+# FAST_HIGHLIGHT_STYLES key onto ini-file key
+local -A map
+map=(
+    default                     -
+    unknown-token               -
+    reserved-word               -
+    alias                       -
+    suffix-alias                -
+    builtin                     -
+    function                    -
+    command                     -
+    precommand                  -
+    commandseparator            -
+    hashed-command              -
+    path                        -
+    path_pathseparator          pathseparator
+    globbing                    -
+    history-expansion           -
+    single-hyphen-option        -
+    double-hyphen-option        -
+    back-quoted-argument        -
+    single-quoted-argument      -
+    double-quoted-argument      -
+    dollar-quoted-argument      -
+    back-or-dollar-double-quoted-argument   -
+    back-dollar-quoted-argument             -
+    assign                      -
+    redirection                 -
+    comment                     -
+    variable                    -
+    mathvar                     -
+    mathnum                     -
+    matherr                     -
+    assign-array-bracket        -
+    for-loop-variable           forvar
+    for-loop-number             fornum
+    for-loop-operator           foroper
+    for-loop-separator          forsep
+    exec-descriptor             -
+    here-string-tri             -
+    here-string-word            -
+    secondary                   -
+    case-input                  -
+    case-parentheses            -
+    case-condition              -
+    correct-subtle              -
+    incorrect-subtle            -
+    subtle-bg                   -
+)
+
+# In which order to generate entries
+local -a order
+order=( 
+    default unknown-token reserved-word alias suffix-alias builtin function command precommand 
+    commandseparator hashed-command path path_pathseparator globbing history-expansion 
+    single-hyphen-option double-hyphen-option back-quoted-argument single-quoted-argument 
+    double-quoted-argument dollar-quoted-argument back-or-dollar-double-quoted-argument 
+    back-dollar-quoted-argument assign redirection comment variable mathvar 
+    mathnum matherr assign-array-bracket for-loop-variable for-loop-number for-loop-operator
+    for-loop-separator exec-descriptor here-string-tri here-string-word secondary
+    case-input case-parentheses case-condition correct-subtle incorrect-subtle subtle-bg
+)
+
+[[ -n "$OPT_VERBOSE" ]] && print "Number of styles available for customization: ${#order}"
+
+# Named colors
+local -a color
+color=( red green blue yellow cyan magenta black white )
+
+#
+# Execution starts here
+#
+
+local -A out
+fast-read-ini-file "$FAST_BASE_DIR/themes/$1.ini" out ""
+
+[[ -z "$OPT_SECONDARY" ]] && local outfile="current_theme.zsh" || local outfile="secondary_theme.zsh"
+command rm -f "$FAST_BASE_DIR"/"$outfile"
+
+# Set a zstyle and a parameter to carry theme name
+if [[ -z "$OPT_SECONDARY" ]]; then
+    print -r -- 'zstyle :plugin:fast-syntax-highlighting theme "'"$1"'"' >>! "$FAST_BASE_DIR"/"$outfile"
+    print -r -- 'typeset -g FAST_THEME_NAME="'"$1"'"' >>! "$FAST_BASE_DIR"/"$outfile"
+    zstyle :plugin:fast-syntax-highlighting theme "$1"
+    FAST_THEME_NAME="$1"
+else
+    local FAST_THEME_NAME="$1"
+fi
+
+# Generate current_theme.zsh or secondary_theme.zsh, traversing ini-file associative array
+local k kk
+local inikey inival result
+for k in "${order[@]}"; do
+    [[ "${map[$k]}" = "-" ]] && kk="$k" || kk="${map[$k]}"
+    inikey="${out[(i)<*>_${kk}]}"
+    inival="${out[$inikey]}"
+    if [[ "$k" = "secondary" && -z "$OPT_SECONDARY" && -n "$inival" ]]; then
+        fast-theme -q --secondary "$inival"
+    fi
+    if [[ "$inival" = bg:* ]]; then
+        result="bg=${inival#bg:}"
+    else
+        if [[ "$inival" = (${(~j:|:)color})* || "$inival" = [0-9]##* ]]; then
+            result="fg=$inival"
+        else
+            result="$inival"
+        fi
+    fi
+
+    print -r -- ': ${FAST_HIGHLIGHT_STYLES['"${FAST_THEME_NAME}$k"']:='"$result"'}' >>! "$FAST_BASE_DIR"/"$outfile"
+    FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}$k]="$result"
+done
+
+[[ -z "$OPT_QUIET" ]] && print "Switched to theme \`$1' (current session, and future sessions)"
+
+[[ -n "$OPT_TEST" ]] && {
+    print -zr '
+# This is an example code that is diverse and allows to test a theme
+text="An example quite long string $with variable in it"
+local param1="text $variable" param2='"'"'other $variable'"'"'
+math=$(( 10 + HISTSIZ + HISTSIZE + $SAVEHIST )) size=$(( 0 ))
+
+for (( ii = 1; ii <= size; ++ ii )); do
+    if [[ "${cmds[ii]} string" = "| string" ]]
+    then
+        sidx=${buffer[(in:ii:)\$\(?#[^\\\\]\)]} # find opening $(
+        (( sidx <= len )) && {
+            eidx=${buffer[(b:sidx:ii)[^\\\\]\)]} # find closing )
+        }
+    fi
+done
+
+'
+}
+
+return 0
+# vim:ft=zsh:et:sw=4:sts=4
