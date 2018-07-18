@@ -925,6 +925,9 @@ if [[ ${chpwd_functions[(i)autojump_chpwd]} -le ${#chpwd_functions} && \
   chpwd_functions[(i)autojump_chpwd]=()
 fi
 
+. ${_zdir}/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+FAST_HIGHLIGHT[use_async]=1
+
 # 共用账户时的定制
 if [[ -n $ZDOTDIR ]]; then
   export SHELL=/bin/zsh
