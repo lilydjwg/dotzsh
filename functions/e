@@ -1,0 +1,19 @@
+e () {
+  local host
+  host=$1
+  shift
+  if [[ $host =~ '^[0-9]+\.[0-9]+$' ]]; then
+    host=192.168.$host
+  fi
+  if [[ $# -gt 0 ]]; then
+    ssh $host $@
+  else
+    if ssh $host which zsh >/dev/null 2>&1; then
+      ssh -t $host SHELL=/bin/zsh TERM=screen-256color zsh
+    else
+      TERM=screen-256color ssh $host $@
+    fi
+  fi
+}
+
+compdef e=ssh
