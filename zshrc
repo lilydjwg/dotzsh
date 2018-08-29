@@ -352,7 +352,7 @@ alias mytex=". ~/soft/context/tex/setuptex"
   alias showcert='openssl x509 -text -noout -in'
   showcert_for_domain () {
     local domain=$1
-    openssl s_client -connect $domain:443 -servername $domain <<<''
+    openssl s_client -connect $domain:443 -servername $domain <<<'' | ascii2uni -qa7
   }
 }
 (( $+commands[trans] )) && alias trans='proxychains -q trans'
