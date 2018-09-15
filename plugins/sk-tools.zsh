@@ -36,6 +36,7 @@ sk-vim-mru () {
 
 sk-search-history () {
   local cmd
+  # TODO: preview at the right, multi-line, syntax-highlighted
   cmd=$(history -n 1 | \
     sk --height $(__calc_height) --reverse -p 'cmd> ')
   if [[ -n $cmd ]]; then
@@ -52,6 +53,7 @@ sk-cd () {
     sk --height $(__calc_height) --reverse -p 'cd> ')
   if [[ -n $dir ]]; then
     zle push-line
+    zle redisplay
     BUFFER="cd ${(q)dir}"
     zle accept-line
   else
