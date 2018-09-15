@@ -224,6 +224,17 @@ bindkey -s "^Xc" "tmux attach -d^M"
 bindkey '^[p' up-line-or-search
 bindkey '^[n' down-line-or-search
 
+# skim things {{{2
+if (( $+commands[sk] )); then
+  autoload -Uz sk-cd
+  zle -N sk-cd
+  bindkey "\ed" sk-cd
+
+  autoload -Uz sk-search-history
+  zle -N sk-search-history
+  bindkey "\er" sk-search-history
+fi
+
 # jump to a position in a command line {{{2
 # https://github.com/scfrazer/zsh-jump-target
 autoload -Uz jump-target

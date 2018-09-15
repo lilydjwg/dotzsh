@@ -1,0 +1,8 @@
+local dir
+cmd=$(history -n 1 | sk)
+if [[ -n $cmd ]]; then
+  BUFFER=$cmd
+  (( CURSOR = $#BUFFER ))
+fi
+
+# vim: se ft=zsh:
