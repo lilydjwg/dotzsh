@@ -1,8 +1,0 @@
-local dir
-dir=$(sort -nr ~/.local/share/autojump/autojump.txt | awk '{print $2}' | sk)
-if [[ -n $dir ]]; then
-  cd $dir
-  zle reset-prompt
-fi
-
-# vim: se ft=zsh:

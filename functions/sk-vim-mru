@@ -1,9 +1,0 @@
-local file
-file=$(tail -n +2 ~/.vim/vim_mru_files | sk)
-if [[ -n $file ]]; then
-  ${1:-vim} $file
-else
-  return 130
-fi
-
-# vim: se ft=zsh:

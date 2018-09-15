@@ -224,21 +224,6 @@ bindkey -s "^Xc" "tmux attach -d^M"
 bindkey '^[p' up-line-or-search
 bindkey '^[n' down-line-or-search
 
-# skim things {{{2
-if (( $+commands[sk] )); then
-  autoload -Uz sk-cd
-  zle -N sk-cd
-  bindkey "\esd" sk-cd
-
-  autoload -Uz sk-search-history
-  zle -N sk-search-history
-  bindkey "\esr" sk-search-history
-
-  autoload -Uz sk-vim-mru
-  vim-mru () { sk-vim-mru }
-  vv-mru () { sk-vim-mru vv }
-fi
-
 # jump to a position in a command line {{{2
 # https://github.com/scfrazer/zsh-jump-target
 autoload -Uz jump-target
@@ -942,12 +927,16 @@ if [[ ${chpwd_functions[(i)autojump_chpwd]} -le ${#chpwd_functions} && \
   chpwd_functions[(i)autojump_chpwd]=()
 fi
 
-fsh=${_zdir}/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-if [[ -f $fsh ]]; then
-  . $fsh
+_plugin=${_zdir}/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+if [[ -f $_plugin ]]; then
+  . $_plugin
   FAST_HIGHLIGHT[use_async]=1
 fi
-unset fsh
+_plugin=${_zdir}/.zsh/plugins/sk-tools.zsh
+if [[ -f $_plugin ]]; then
+  . $_plugin
+fi
+unset _plugin
 
 # 共用账户时的定制
 if [[ -n $ZDOTDIR ]]; then
