@@ -228,11 +228,15 @@ bindkey '^[n' down-line-or-search
 if (( $+commands[sk] )); then
   autoload -Uz sk-cd
   zle -N sk-cd
-  bindkey "\ed" sk-cd
+  bindkey "\esd" sk-cd
 
   autoload -Uz sk-search-history
   zle -N sk-search-history
-  bindkey "\er" sk-search-history
+  bindkey "\esr" sk-search-history
+
+  autoload -Uz sk-vim-mru
+  vim-mru () { sk-vim-mru }
+  vv-mru () { sk-vim-mru vv }
 fi
 
 # jump to a position in a command line {{{2
