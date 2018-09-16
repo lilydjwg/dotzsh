@@ -42,8 +42,10 @@ sk-search-history () {
   if [[ -n $cmd ]]; then
     BUFFER=$cmd
     (( CURSOR = $#BUFFER ))
-    zle redisplay # for syntax highlight
   fi
+  # on the successful branch: for syntax highlight
+  # the other: fix prompt
+  zle redisplay
 }
 
 sk-cd () {
