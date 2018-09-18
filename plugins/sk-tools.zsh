@@ -38,11 +38,15 @@ sk-search-history () {
   local cmd
   # TODO: preview at the right, multi-line, syntax-highlighted
   cmd=$(history -n 1 | \
-    sk --height $(__calc_height) --reverse -p 'cmd> ')
-  if [[ -n $cmd ]]; then
-    BUFFER=$cmd
-    (( CURSOR = $#BUFFER ))
+    sk --height $(__calc_height) --reverse -p 'cmd> ' \
+    --query "$BUFFER" --print-query)
+  if [[ $cmd = *$'\n'* ]]; then
+    BUFFER=${cmd#*$'\n'}
+  else
+    # FIXME: can't get query string
+    # BUFFER=$cmd
   fi
+  (( CURSOR = $#BUFFER ))
   # on the successful branch: for syntax highlight
   # the other: fix prompt
   zle redisplay
