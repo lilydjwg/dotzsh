@@ -716,6 +716,16 @@ install_autojump () { # autojump 快速安装 {{{2
   wget https://github.com/joelthelion/autojump/raw/master/bin/autojump.zsh -O ${_zdir}/.zsh/autojump.zsh
   wget https://github.com/joelthelion/autojump/raw/master/bin/_j -O ${_zdir}/.zsh/Completion/_j
 }
+wait_pid () { # {{{2
+  local pid=$1
+  while true; do
+    if [[ -d /proc/$pid ]]; then
+      sleep 3
+    else
+      break
+    fi
+  done
+}
 # 变量设置 {{{1
 # re-tie fails for zsh 4
 export -TU PYTHONPATH pythonpath 2>/dev/null
