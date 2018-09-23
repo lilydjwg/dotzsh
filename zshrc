@@ -535,12 +535,6 @@ if [[ -d ${VIMTMP:=~/tmpfs} ]]; then # {{{2 record errors from compilers
   # _error_command g++ -g -Wall
   # _error_command cargo
 fi
-2mp3 () { # 转换成 mp3 格式 {{{2
-  [[ $# -ne 1 ]] && echo "Usage: $0 FILE" && return 1
-  mplayer -vo null -vc dummy -af resample=44100 -ao pcm:waveheader "$1" && \
-  lame -m s audiodump.wav -o "$1:r.mp3" && rm audiodump.wav || \
-  {echo Failed. && return 2}
-}
 ptyrun () { # 使用伪终端代替管道，对 ls 这种“顽固分子”有效 {{{2
   local ptyname=pty-$$
   zmodload zsh/zpty
@@ -578,17 +572,6 @@ mvgb () { # 文件名从 GB 转码，带确认{{{2
     echo
   done
 }
-iip () { #{{{2
-  qip=${1:-cip}
-  echo -n "ip> "
-  read ip
-  while [[ $ip != 'q' ]]; do
-    $qip $ip
-    echo -n "ip> "
-    read ip
-  done
-  unset ip
-}
 pid () { #{{{2
   s=0
   for i in $*; do
@@ -604,7 +587,7 @@ pid () { #{{{2
   done
   return $s
 }
-# 快速查找当前目录下的文件 {{{2
+# s () { 快速查找当前目录下的文件 {{{2
 # rg is 3x faster than ag, and find 2x
 if (( $+commands[rg] )) then
   s () {
@@ -615,18 +598,6 @@ else
     find . -name "*$1*"
   }
 fi
-en () { # 使用 DNS TXT 记录的词典 {{{2
-  # https://github.com/chuangbo/jianbing-dictionary-dns
-  dig "$*.jianbing.org" +short txt | perl -pe's/\\(\d{1,3})/chr $1/eg; s/(^"|"$)//g'
-}
-shutdown () { #{{{2
-  echo -n 你确定要关机吗？
-  read i
-  if [[ $i == [Yy] ]]; then
-    systemctl poweroff
-    # dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
-  fi
-}
 killssh () { #{{{2 kill ssh that using default master socket
   local keys
   if [[ $# -lt 1 ]]; then
@@ -672,20 +643,12 @@ tianqi () { #天气预报 {{{2
   if [[ $# -eq 1 ]]; then
     city=$1
   elif [[ $# -eq 0 ]]; then
-    city=南京
+    city=北京
   else
     echo "城市？" >&2
     return 1
   fi
   w3m -dump "http://weather1.sina.cn/dpool/weather_new/forecast_new.php?city=$city&vt=4" 2>/dev/null | sed '1,/更换城市/d;/^loading/,$d;s/\[[^]]\+\]//g'
-}
-yuntu_url () { #最新卫星云图 {{{2
-  curl -s --compressed http://www.weather.com.cn/static/product_video_v1.php\?class\=JC_YT_DL_WXZXCSYT | grep -E 'sevp_nsmc_wxcl_asc_e99_achn_lno_py_(.+)? w' | cut -c62-157
-}
-yuniodl () { #下载云诺分享文件 {{{2
-  token=$1
-  [[ -z $token ]] && return 1
-  wget -c --header "Referer: http://s.yunio.com/$token" http://s.yunio.com/publiclink/download/"$token?&path=&type=none&name="
 }
 duppkg4repo () { #软件仓库中重复的软件包 {{{2
   local repo=$1
@@ -701,7 +664,7 @@ duppkg4repo () { #软件仓库中重复的软件包 {{{2
 try_until_succeed () { #反复重试，直到成功 {{{2
   while ! $*; do :; done
 }
-testgoogleip () { # {{{2
+test_url_resolves_to () { # {{{2
   url=$1
   ip=$2
   host=${${url#*//}%%/*}
