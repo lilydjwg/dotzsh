@@ -40,8 +40,9 @@ sk-search-history () {
     sk -e --tac --tiebreak index --height $(__calc_height) --reverse -p 'cmd> ' \
     --preview 'echo {}' --preview-window=down:3:wrap \
     --query "$BUFFER" --print-query)
-  if [[ $cmd = *$'\n'* ]]; then
+  if [[ $cmd == *$'\n'* ]]; then
     BUFFER=${cmd#*$'\n'}
+    BUFFER=${BUFFER//\\n/$'\n'}
   else
     # FIXME: can't get query string
     # BUFFER=$cmd
