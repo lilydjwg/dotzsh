@@ -37,7 +37,7 @@ sk-vim-mru () {
 sk-search-history () {
   local cmd
   cmd=$(history -n 1 | \
-    sk -e --tiebreak index --height $(__calc_height) --reverse -p 'cmd> ' \
+    sk -e --tac --tiebreak index --height $(__calc_height) --reverse -p 'cmd> ' \
     --preview 'echo {}' --preview-window=down:3:wrap \
     --query "$BUFFER" --print-query)
   if [[ $cmd = *$'\n'* ]]; then
