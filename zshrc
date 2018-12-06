@@ -361,9 +361,18 @@ alias mytex=". ~/soft/context/tex/setuptex"
 (( $+commands[nvim] )) && alias nv=nvim
 # take screenshot to stdout (PNG)
 if (( $+commands[maim] )); then
-  alias screenshot="maim -s -l -c 255,0,255,0.15 -k -n 2"
+  _screenshot="maim -s -l -c 255,0,255,0.15 -k -n 2"
 elif (( $+commands[import] )); then
-  alias screenshot="import png:-"
+  _screenshot="import png:-"
+fi
+if (( $+_screenshot )); then
+  screenshot () {
+    if [[ -t 1 ]]; then
+      echo >&2 "Refused to write image to terminal."
+      return 1
+    fi
+    ${=_screenshot} "$@"
+  }
 fi
 (( $+commands[exa] )) && {
   xtree () {
