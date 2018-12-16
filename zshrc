@@ -367,7 +367,7 @@ elif (( $+commands[import] )); then
 fi
 if (( $+_screenshot )); then
   screenshot () {
-    if [[ -t 1 ]]; then
+    if [[ -t 1 && $# -eq 0 ]]; then
       echo >&2 "Refused to write image to terminal."
       return 1
     fi
