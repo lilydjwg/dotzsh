@@ -1,202 +1,253 @@
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H4GZAACT2MQ3W)
+[![paypal](https://img.shields.io/badge/-Donate-yellow.svg?longCache=true&style=for-the-badge)](https://www.paypal.me/ZdharmaInitiative)
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=D54B3S7C6HGME)
+[![patreon](https://img.shields.io/badge/-Patreon-orange.svg?longCache=true&style=for-the-badge)](https://www.patreon.com/psprint)
+<br/>New: You can request a feature when donating, even fancy or advanced ones get implemented this way. [There are
+reports](DONATIONS.md) about what is being done with the money received.
 
-```
- _____         _       ____              _                  _   _ _       _     _ _       _     _   _
-|  ___|_ _ ___| |_    / ___| _   _ _ __ | |_ __ ___  __    | | | (_) __ _| |__ | (_) __ _| |__ | |_(_)_ __   __ _
-| |_ / _` / __| __|___\___ \| | | | '_ \| __/ _` \ \/ /____| |_| | |/ _` | '_ \| | |/ _` | '_ \| __| | '_ \ / _` |
-|  _| (_| \__ \ ||_____|__) | |_| | | | | || (_| |>  <_____|  _  | | (_| | | | | | | (_| | | | | |_| | | | | (_| |
-|_|  \__,_|___/\__|   |____/ \__, |_| |_|\__\__,_/_/\_\    |_| |_|_|\__, |_| |_|_|_|\__, |_| |_|\__|_|_| |_|\__, |
-                             |___/                                  |___/           |___/                   |___/
-```
+# Fast Syntax Highlighting (F-Sy-H)
 
-# Zshell Fast Syntax Highlighting
+Feature rich syntax highlighting for Zsh.
 
-60 commits that optimized standard `zsh-syntax-highlighting` to the point that it can edit `10 kB`
-functions with `zed`/`vared` (optimizations done in
-[history-search-multi-word](https://github.com/zdharma/history-search-multi-word)). Also added:
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/highlight-much.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
 
-1. Variable highlighting
+### Table of Contents
 
-    ![image](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/parameter.png)
+- [Installation](#installation)
+- [Features](#features)
+- [Performance](#performance)
 
-2. Colorizing of `${(a)parameter[...]}` inside strings (normally only `$parameter` is colorized)
+### Other Contents
+- [License](https://github.com/zdharma/fast-syntax-highlighting/blob/master/LICENSE)
+- [Changelog](https://github.com/zdharma/fast-syntax-highlighting/blob/master/CHANGELOG.md)
+- [Theme Guide](https://github.com/zdharma/fast-syntax-highlighting/blob/master/THEME_GUIDE.md)
+- [Chroma Guide](https://github.com/zdharma/fast-syntax-highlighting/blob/master/CHROMA_GUIDE.adoc)
 
-    ![image](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/in_string.png)
+# Installation
 
-3. Fixed colorizing of function definition, like `abc() { ... }` – `abc` will not be red
+### Manual
 
-    ![image](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/function.png)
-
-4. Fixed colorizing of complex conditions inside `[[`, like `[[ "$a" || "$b" ]]`
-
-    ![image](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/cplx_cond.png)
-
-5. Closing `]]` and `]` are highlighted (see above)
-
-6. Paths from `$CDPATH` aren't colorized unless the command is `cd`
-
-7. Five 256-color themes, switched with `fast-theme {theme-name}` (also try `-t` option to obtain the below snippet):
-
-    ![image](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/theme.png)
-
-8. Correct highlighting of descriptor-variables passed to `exec`:
-
-    ![image](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/execfd_cmp.png)
-
-9. Recursive `eval` and `$( )` highlighting, with secondary theme (two themes active at the same time!):
-
-    ![image](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/eval_cmp.png)
-
-10. New architecture – **chroma functions** – highlighting that is **specific** for given command. There
-    are two chromas currently, for `git` (verifies correct remote & branch, also see below)  and `grep`
-    (highlights regular expression):
-
-    ![image](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/git_chroma.png)
-
-Performance differencies can be observed at Asciinema recording, where `10 kB` function is being edited:
-
-[![asciicast](https://asciinema.org/a/112367.png)](https://asciinema.org/a/112367)
-
-# Updates (2018)
-**2018-07-11**
-
-There were problems with Ctrl-C not working when using FSH. After many days I've found a fix
-for this, it's pushed to master.
-
-Second, asynchronous path checking (useful on e.g. slow network drives, or when there are many files in directory)
-is now optional. Set `FAST_HIGHLIGHT[use_async]=1` to enable it. This saves some users from Zshell crashes
-– there's an unknown bug in Zsh.
-
-**2018-06-09**
-
-New chroma functions: `awk`, `make`, `perl`, `vim`. Checkout the [video](https://asciinema.org/a/186234),
-it shows functionality of `awk` – compiling of code and NOT running it. Perl can do this too:
-[video](https://asciinema.org/a/186098).
-
-**2018-06-06**
-
-FSH gained a new architecture – "chroma functions". They are similar to "completion functions", i.e. they
-are defined **per-command**, but instead of completing that command, they colorize it. Two chroma exist,
-for `Git` ([video](https://asciinema.org/a/185707), [video](https://asciinema.org/a/185811)) and for `grep`
-([video](https://asciinema.org/a/185942)). Checkout
-[example chroma](https://github.com/zdharma/fast-syntax-highlighting/blob/master/chroma/-example.ch) if you
-would like to highlight a command.
-
-![sshot](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/git_chroma.png)
-
-**2018-06-01**
-
-Highlighting of command substitution (i.e. `$(...)`) with alternate theme – two themes at once! It was just white before:
-
-![sshot](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/cmdsubst.png)
-
-To select which theme to use for `$(...)` set the key `secondary=` in [theme ini file](https://github.com/zdharma/fast-syntax-highlighting/blob/master/themes/free.ini#L7).
-All shipped themes have this key set (only the `default` theme doesn't use second theme).
-
-Also added correct highlighting of descriptor-variables passed to `exec`:
-
-![sshot](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/execfd.png)
-
-**2018-05-30**
-
-For-loop is highlighted, it has separate settings in [theme file](https://github.com/zdharma/fast-syntax-highlighting/blob/master/themes/free.ini).
-
-![sshot](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/for-loop.png)
-
-**2018-05-27**
-
-Added support for 256-color themes. There are six themes shipped with FSH. The command to
-switch theme is `fast-theme {theme-name}`, it has a completion which lists available themes
-and options. Checkout [asciinema recording](https://asciinema.org/a/183814) that presents
-the themes.
-
-**2018-05-25**
-
-Hash holding paths that shouldn't be grepped (globbed) – blacklist for slow disks, mounts, etc.:
+Clone the Repository.
 
 ```zsh
-typeset -gA FAST_BLIST_PATTERNS
-FAST_BLIST_PATTERNS[/mount/nfs1/*]=1
-FAST_BLIST_PATTERNS[/mount/disk2/*]=1
+git clone https://github.com/zdharma/fast-syntax-highlighting ~/path/to/fsh
 ```
 
-**2018-05-23**
-
-Assign colorizing now spans to variables defined by `typeset`, `export`, `local`, etc.:
-
-![sshot](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/typeset.png)
-
-Also, `zcalc` has a separate math mode and specialized highlighting – no more light-red colors because of
-treating `zcalc` like a regular command-line:
-
-![sshot](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/zcalc.png)
-
-**2018-05-22**
-
-Array assignments were still boring, so I throwed in bracked colorizing:
-
-![sshot](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/array-assign.png)
-
-**2018-05-22**<a name="assign-update"></a>
-
-Assignments are no more one-colour default-white. When used in assignment, highlighted are:
-
-- variables (outside strings),
-- strings (double-quoted and single-quoted),
-- math-mode (`val=$(( ... ))`).
-
-![sshot](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/assign.png)
-
-**2018-01-06**
-
-Math mode is highlighted – expressions `(( ... ))` and `$(( ... ))`. Empty variables are colorized as red.
-There are 3 style names (fields of
-[FAST_HIGHLIGHT_STYLES](https://github.com/zdharma/fast-syntax-highlighting/blob/master/fast-highlight#L34)
-hash) for math-variable, number and empty variable (error): `mathvar`, `mathnum`, `matherr`. You can set
-them (like the animation below shows) to change colors.
-
-![animation](https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/math.gif)
-
-## Installation
-
-**The plugin is "standalone"**, which means that only sourcing it is needed. So to
-install, unpack `fast-syntax-highlighting` somewhere and add
-
+And add the following to your `zshrc` file.
 ```zsh
-source {where-fsh-is}/fast-syntax-highlighting.plugin.zsh
+source ~/path/to/fsh/fast-syntax-highlighting.plugin.zsh
 ```
 
-to `zshrc`.
+### [Zplugin](https://github.com/psprint/zplugin) (Recommended)
 
-If using a plugin manager, then `Zplugin` is recommended, but you can use any
-other too, and also install with `Oh My Zsh` (by copying directory to
-`~/.oh-my-zsh/custom/plugins`).
-
-### [Zplugin](https://github.com/psprint/zplugin)
-
-Add `zplugin light zdharma/fast-syntax-highlighting` to your `.zshrc` file. Zplugin will handle
-cloning the plugin for you automatically the next time you start zsh. To update
-issue `zplugin update zdharma/fast-syntax-highlighting` (`update --all` can also be used).
-
-Zplugin can load f-sy-h in turbo-mode, i.e. after prompt, to speed-up `.zshrc` processing:
-
+Add the following to your `zshrc` file.
 ```zsh
-zplugin ice wait"1" # 1 second after prompt
 zplugin light zdharma/fast-syntax-highlighting
 ```
 
 ### Antigen
 
-Add `antigen bundle zdharma/fast-syntax-highlighting` to your `.zshrc` file. Antigen will handle
-cloning the plugin for you automatically the next time you start zsh.
+Add the following to your `zshrc` file.
 
-### Oh-My-Zsh
-
-1. `cd ~/.oh-my-zsh/custom/plugins`
-2. `git clone https://github.com/zdharma/fast-syntax-highlighting.git`
-3. Add `fast-syntax-highlighting` to your plugin list
+```zsh
+antigen bundle zdharma/fast-syntax-highlighting
+```
 
 ### Zgen
 
-Add `zgen load zdharma/fast-syntax-highlighting` to your `.zshrc` file in the same place you're doing
+Add the following to your `.zshrc` file in the same place you're doing
 your other `zgen load` calls in.
+
+```
+zgen load zdharma/fast-syntax-highlighting
+```
+
+
+### Oh-My-Zsh
+
+Clone the Repository.
+```
+git clone https://github.com/zdharma/fast-syntax-highlighting.git \
+  ~/.oh-my-zsh/custom/plugins/fast-syntax-highlighting
+```
+
+And add `fast-syntax-highlighting` to your plugin list.
+
+# Features
+
+### Themes
+
+Switch themes via `fast-theme {theme-name}`.
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/theme.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+Run `fast-theme -t {theme-name}` option to obtain the snippet above.
+
+Run `fast-theme -l` to list available themes.
+
+### Variables
+
+Comparing to the project `zsh-users/zsh-syntax-highlighting` (the upper line):
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/parameter.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/in_string.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+### Brackets
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/brackets.gif"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+### Conditions
+
+Comparing to the project `zsh-users/zsh-syntax-highlighting` (the upper line):
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/cplx_cond.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+### Strings
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/ideal-string.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+
+### here-strings
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/herestring.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+### `exec` descriptor-variables
+
+Comparing to the project `zsh-users/zsh-syntax-highlighting` (the upper line):
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/execfd_cmp.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+### for-loops and alternate syntax (brace `{`/`}` blocks)
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/for-loop-cmp.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+### Function definitions
+
+Comparing to the project `zsh-users/zsh-syntax-highlighting` (the upper 2 lines):
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/function.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+### Recursive `eval` and `$( )` highlighting
+
+Comparing to the project `zsh-users/zsh-syntax-highlighting` (the upper line):
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/eval_cmp.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+### Chroma functions
+
+Highlighting that is specific for a given command.
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/git_chroma.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+The [chromas](https://github.com/zdharma/fast-syntax-highlighting/tree/master/chroma)
+that are enabled by default can be found
+[here](https://github.com/zdharma/fast-syntax-highlighting/blob/master/fast-highlight#L156).
+
+### Math-mode highlighting
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/math.gif"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+### Zcalc highlighting
+
+<div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <img
+    src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/zcalc.png"
+    alt="image could not be loaded"
+    style="color:red;background-color:black;font-weight:bold"
+  />
+</div>
+
+# Performance
+Performance differences can be observed in this Asciinema recording, where a `10 kB` function is being edited.
+
+<div style="width:100%;background-color:#121314;border:3px solid #121314;border-radius:6px;margin:5px 0;padding:2px 5px">
+  <a href="https://asciinema.org/a/112367">
+    <img src="https://asciinema.org/a/112367.png" alt="asciicast">
+  </a>
+</div>
+
+

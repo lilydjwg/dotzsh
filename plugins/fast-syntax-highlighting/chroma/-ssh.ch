@@ -15,6 +15,8 @@
 # $4 - a private copy of $_end_pos from the above scope
 #
 
+# This chroma guards that port number isn't passed in hostname (no :{port} occurs).
+
 (( next_word = 2 | 8192 ))
 
 local __first_call="$1" __wrd="$2" __start_pos="$3" __end_pos="$4"
@@ -28,8 +30,7 @@ local -a __results
     FAST_HIGHLIGHT[chroma-ssh-counter-all]=1
     FAST_HIGHLIGHT[chroma-ssh-message]=""
     FAST_HIGHLIGHT[chroma-ssh-skip-two]=0
-    __style=${FAST_THEME_NAME}command
-
+    return 1
 } || {
     (( FAST_HIGHLIGHT[chroma-ssh-counter-all] += 1, __idx2 = FAST_HIGHLIGHT[chroma-ssh-counter-all] ))
 
@@ -47,10 +48,10 @@ local -a __results
             FAST_HIGHLIGHT[chroma-ssh-skip-two]=1
         fi
     else
-        # Count non-option tokens.
         if (( FAST_HIGHLIGHT[chroma-ssh-skip-two] )); then
             FAST_HIGHLIGHT[chroma-ssh-skip-two]=0
         else
+            # Count non-option tokens.
             (( FAST_HIGHLIGHT[chroma-ssh-counter] += 1, __idx1 = FAST_HIGHLIGHT[chroma-ssh-counter] ))
             if [[ "${FAST_HIGHLIGHT[chroma-ssh-counter]}" -eq 1 ]]; then
                 if [[ "$__arg" = [^:]##:[0-9]## ]]; then

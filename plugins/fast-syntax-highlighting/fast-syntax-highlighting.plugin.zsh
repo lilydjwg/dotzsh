@@ -29,12 +29,29 @@
 # -------------------------------------------------------------------------------------------------
 
 
-# Set $ZERO to the expected value, regardless of functionargzero.
-typeset -g ZERO=${(%):-%N}
-typeset -g FAST_BASE_DIR="${ZERO:h}"
+# Standarized way of handling finding plugin dir,
+# regardless of functionargzero and posixargzero,
+# and with an option for a plugin manager to alter
+# the plugin directory (i.e. set ZERO parameter)
+# http://zdharma.org/Zsh-100-Commits-Club/Zsh-Plugin-Standard.html
+0="${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}"
+typeset -g FAST_BASE_DIR="${0:h}"
+typeset -ga _FAST_MAIN_CACHE
+# Holds list of indices pointing at brackets that
+# are complex, i.e. e.g. part of "[[" in [[ ... ]]
+typeset -ga _FAST_COMPLEX_BRACKETS
+
+typeset -g FAST_WORK_DIR
+: ${FAST_WORK_DIR:=$FAST_BASE_DIR}
+FAST_WORK_DIR=${~FAST_WORK_DIR}
 
 if [[ -z "$ZPLG_CUR_PLUGIN" && "${fpath[(r)$FAST_BASE_DIR]}" != $FAST_BASE_DIR ]]; then
     fpath+=( "$FAST_BASE_DIR" )
+fi
+
+if [[ "$FAST_WORK_DIR" = /usr/* || ( "$FAST_WORK_DIR" = /opt/* && ! -w "$FAST_WORK_DIR" ) ]]; then
+    FAST_WORK_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/fsh"
+    command mkdir -p "$FAST_WORK_DIR"
 fi
 
 # Invokes each highlighter that needs updating.
@@ -51,7 +68,7 @@ _zsh_highlight()
     return $ret
   fi
 
-  setopt localoptions warncreateglobal noksharrays
+  setopt localoptions warncreateglobal noksharrays noshwordsplit extendedglob typesetsilent nokshglob
   local REPLY # don't leak $REPLY into global scope
   local -a reply
 
@@ -66,7 +83,22 @@ _zsh_highlight()
   # may need to remove path_prefix highlighting when the line ends
   if [[ $WIDGET == zle-line-finish ]] || _zsh_highlight_buffer_modified; then
       -fast-highlight-init
-      -fast-highlight-process "$PREBUFFER" "$BUFFER" 0 && region_highlight=( $reply ) || region_highlight=()
+      -fast-highlight-process "$PREBUFFER" "$BUFFER" 0
+      (( FAST_HIGHLIGHT[use_brackets] )) && {
+          _FAST_MAIN_CACHE=( $reply )
+          -fast-highlight-string-process "$PREBUFFER" "$BUFFER"
+      }
+      region_highlight=( $reply )
+  else
+      local char="${BUFFER[CURSOR+1]}"
+      if [[ "$char" = ["{([])}"] || "${FAST_HIGHLIGHT[prev_char]}" = ["{([])}"] ]]; then
+          FAST_HIGHLIGHT[prev_char]="$char"
+          (( FAST_HIGHLIGHT[use_brackets] )) && {
+              reply=( $_FAST_MAIN_CACHE )
+              -fast-highlight-string-process "$PREBUFFER" "$BUFFER"
+              region_highlight=( $reply )
+          }
+      fi
   fi
 
   {
@@ -83,7 +115,7 @@ _zsh_highlight()
         local needle=$'\n'
         integer min max
         if (( MARK > CURSOR )) ; then
-          min=$CURSOR max=$MARK
+          min=$CURSOR max=$(( MARK + 1 ))
         else
           min=$MARK max=$CURSOR
         fi
@@ -260,6 +292,8 @@ _zsh_highlight_preexec_hook()
 {
   typeset -g _ZSH_HIGHLIGHT_PRIOR_BUFFER=
   typeset -gi _ZSH_HIGHLIGHT_PRIOR_CURSOR=0
+  typeset -ga _FAST_MAIN_CACHE
+  _FAST_MAIN_CACHE=()
 }
 
 autoload -Uz add-zsh-hook
@@ -278,16 +312,27 @@ autoload -Uz -- is-at-least fast-theme fast-read-ini-file -fast-run-git-command 
 autoload -Uz -- chroma/-git.ch chroma/-example.ch chroma/-grep.ch chroma/-perl.ch chroma/-make.ch \
                 chroma/-awk.ch chroma/-vim.ch chroma/-source.ch chroma/-sh.ch chroma/-docker.ch \
                 chroma/-autoload.ch chroma/-ssh.ch chroma/-scp.ch chroma/-which.ch chroma/-printf.ch \
-                chroma/-ruby.ch
-source "${ZERO:h}/fast-highlight"
+                chroma/-ruby.ch chroma/-whatis.ch chroma/-alias.ch chroma/-subcommand.ch \
+                chroma/-autorandr.ch chroma/-nmcli.ch chroma/-fast-theme.ch chroma/-node.ch \
+                chroma/-fpath_peq.ch
+
+source "${0:h}/fast-highlight"
+source "${0:h}/fast-string-highlight"
 
 local __fsyh_theme
 zstyle -s :plugin:fast-syntax-highlighting theme __fsyh_theme
 
-[[ "${+termcap[Co]}" != 1 || "${termcap[Co]}" != "256" ]] && \
-    [[ "${FAST_HIGHLIGHT_STYLES[variable]}" = "fg=113" && "$__fsyh_theme" = default ]] && \
-    FAST_HIGHLIGHT_STYLES[variable]="none"
+[[ ( "${+termcap}" != 1 || "${termcap[Co]}" != <-> || "${termcap[Co]}" -lt "256" ) && "$__fsyh_theme" = default ]] && {
+    [[ "${FAST_HIGHLIGHT_STYLES[variable]}" = "fg=113" ]] && FAST_HIGHLIGHT_STYLES[variable]="none"
+    [[ "${FAST_HIGHLIGHT_STYLES[globbing-ext]}" = "fg=13" ]] && FAST_HIGHLIGHT_STYLES[globbing-ext]="fg=blue,bold"
+    [[ "${FAST_HIGHLIGHT_STYLES[here-string-text]}" = "bg=18" ]] && FAST_HIGHLIGHT_STYLES[here-string-text]="bg=blue"
+    [[ "${FAST_HIGHLIGHT_STYLES[here-string-var]}" = "fg=cyan,bg=18" ]] && FAST_HIGHLIGHT_STYLES[here-string-var]="fg=cyan,bg=blue"
+    [[ "${FAST_HIGHLIGHT_STYLES[correct-subtle]}" = "fg=12" ]] && FAST_HIGHLIGHT_STYLES[correct-subtle]="bg=blue"
+    [[ "${FAST_HIGHLIGHT_STYLES[subtle-bg]}" = "bg=18" ]] && FAST_HIGHLIGHT_STYLES[subtle-bg]="bg=blue"
+}
 
 unset __fsyh_theme
+
+alias fsh-alias=fast-theme
 
 -fast-highlight-fill-option-variables

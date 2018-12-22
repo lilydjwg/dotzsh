@@ -30,7 +30,7 @@ local -a __lines_list
     FAST_HIGHLIGHT[chroma-docker-got-subcommand]=0
     FAST_HIGHLIGHT[chroma-docker-subcommand]=""
     FAST_HIGHLIGHT[chrome-docker-got-msg1]=0
-    __style=${FAST_THEME_NAME}command
+    return 1
 } || {
     # Following call, i.e. not the first one
 
@@ -44,7 +44,7 @@ local -a __lines_list
         if (( FAST_HIGHLIGHT[chroma-docker-got-subcommand] == 0 )); then
             FAST_HIGHLIGHT[chroma-docker-got-subcommand]=1
             FAST_HIGHLIGHT[chroma-docker-subcommand]="$__wrd"
-            __style=${FAST_THEME_NAME}builtin
+            __style=${FAST_THEME_NAME}subcommand
             (( FAST_HIGHLIGHT[chroma-docker-counter] += 1 ))
         else
             __wrd="${__wrd//\`/x}"
@@ -55,7 +55,7 @@ local -a __lines_list
                     (( FAST_HIGHLIGHT[chroma-docker-counter] += 1, __idx1 = FAST_HIGHLIGHT[chroma-docker-counter] ))
 
                     if (( __idx1 == 2 )); then
-                        __style=${FAST_THEME_NAME}reserved-word
+                        __style=${FAST_THEME_NAME}subcommand
                     elif (( __idx1 == 3 )); then
                         -fast-run-command "docker images -q" chroma-docker-list ""
                         [[ -n "${__lines_list[(r)$__wrd]}" ]] && {
@@ -67,6 +67,8 @@ local -a __lines_list
                         }
                     fi
                 } || __style=${FAST_THEME_NAME}${${${__wrd:#--*}:+single-hyphen-option}:-double-hyphen-option}
+            else
+                return 1
             fi
         fi
     fi

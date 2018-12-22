@@ -22,8 +22,7 @@ integer __idx1 __idx2
 # First call, i.e. command starts, i.e. "grep" token etc.
 (( __first_call )) && {
     FAST_HIGHLIGHT[chroma-grep-counter]=0
-    __style=${FAST_THEME_NAME}command
-
+    return 1
 } || {
     # Following call, i.e. not the first one.
 
@@ -55,7 +54,7 @@ integer __idx1 __idx2
                 if [[ -n "${match[3]}" ]]; then
                     __idx1+=${mbegin[3]}-1
                     __idx2=__idx1+${mend[3]}-${mbegin[3]}+1
-                    (( __start=__idx1-${#PREBUFFER}, __end=__idx2-${#PREBUFFER}, __start >= 0 )) && reply+=("$__start $__end ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}mathnum]}")
+                    (( __start=__idx1-${#PREBUFFER}, __end=__idx2-${#PREBUFFER}, __start >= 0 )) && reply+=("$__start $__end ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}for-loop-operator]}")
                     __idx1=__idx2
                 else
                     __idx1+=${mbegin[5]}-1
