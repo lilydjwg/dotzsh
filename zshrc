@@ -415,7 +415,7 @@ alias ren="vim +'Ren'"
 # 查看进程数最多的程序
 alias topnum="ps -e|sort -k4|awk '{print \$4}'|uniq -c|sort -n|tail"
 alias soul="mplayer -really-quiet -nolirc -loop 0 ~/音乐/_纯音乐/忧伤还是快乐.mp3"
-alias xcp="rsync -aviHAXKhP --delete --exclude='*~' --exclude=__pycache__"
+alias xcp="rsync -aviHAXKhPS --delete --exclude='*~' --exclude=__pycache__"
 alias nonet="HTTP_PROXY='http://localhost:1' HTTPS_PROXY='http://localhost:1' FTP_PROXY='http://localhost:1' http_proxy='http://localhost:1' https_proxy='http://localhost:1' ftp_proxy='http://localhost:1'"
 alias fromgbk="iconv -t latin1 | iconv -f gb18030"
 alias swaptop='watch -n 1 "swapview | tail -\$((\$LINES - 2)) | cut -b -\$COLUMNS"'
@@ -597,16 +597,9 @@ pid () { #{{{2
   return $s
 }
 # s () { 快速查找当前目录下的文件 {{{2
-# rg is 3x faster than ag, and find 2x
-if (( $+commands[rg] )) then
-  s () {
-    rg --files -g "*$1*"
-  }
-else
-  s () {
-    find . -name "*$1*"
-  }
-fi
+s () {
+  find . -name "*$1*"
+}
 killssh () { #{{{2 kill ssh that using default master socket
   local keys
   if [[ $# -lt 1 ]]; then
