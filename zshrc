@@ -332,7 +332,6 @@ alias woman=man
 alias 7z="7z '-xr!*~' '-xr!*.swp'"
 alias mytex=". ~/soft/context/tex/setuptex"
 (( $+commands[zhcon] )) && alias zhcon="zhcon --utf8"
-(( $+commands[luit] )) && alias gbk="luit -encoding gbk"
 (( $+commands[rlwrap] )) && {
   (( $+commands[ilua] )) && alias ilua='rlwrap ilua'
   (( $+commands[psh] )) && alias psh='rlwrap psh'
@@ -495,7 +494,7 @@ else
   (( $+commands[ltrace] )) && function ltrace () { (command ltrace "$@" 3>&1 1>&2 2>&3) | vim -R - }
 fi
 song () { find ~/音乐 -iname "*$1*" }
-mvpc () { mv -- $1 "`echo $1|ascii2uni -a J|tr '/' '-'`" } # 将以 %HH 表示的文件名改正常
+mvpc () { mv -- $1 "$(echo $1|ascii2uni -a J|tr '/' '-')" } # 将以 %HH 表示的文件名改正常
 nocolor () { sed -r 's:\x1b\[[0-9;]*[mK]::g;s:[\r\x0f]::g' }
 sshpubkey () { tee < ~/.ssh/id_*.pub(om[1]) >(xsel -i) }
 rmempty () { #删除空文件 {{{2
@@ -574,7 +573,7 @@ clipboard_png2bmp () { # 将剪贴板中的图片从 png 转到 bmp。QQ 会使�
 }
 mvgb () { # 文件名从 GB 转码，带确认{{{2
   for i in $*; do
-    new="`echo $i|iconv -f utf8 -t latin1|iconv -f gbk`"
+    new="$(echo $i|iconv -f utf8 -t latin1|iconv -f gbk)"
     echo $new
     echo -n 'Sure? '
     read -q ans && mv -i $i $new
