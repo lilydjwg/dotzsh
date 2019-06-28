@@ -251,24 +251,24 @@ _zsh_highlight_bind_widgets()
       # NO_function_argzero, regardless of the option's setting here.
 
       # User defined widget: override and rebind old one with prefix "orig-".
-      user:*) zle -N $prefix-$cur_widget ${widgets[$cur_widget]#*:}
+      user:*) zle -N -- $prefix-$cur_widget ${widgets[$cur_widget]#*:}
               eval "_zsh_highlight_widget_${(q)prefix}-${(q)cur_widget}() { _zsh_highlight_call_widget ${(q)prefix}-${(q)cur_widget} -- \"\$@\" }"
-              zle -N $cur_widget _zsh_highlight_widget_$prefix-$cur_widget;;
+              zle -N -- $cur_widget _zsh_highlight_widget_$prefix-$cur_widget;;
 
       # Completion widget: override and rebind old one with prefix "orig-".
       completion:*) zle -C $prefix-$cur_widget ${${(s.:.)widgets[$cur_widget]}[2,3]} 
                     eval "_zsh_highlight_widget_${(q)prefix}-${(q)cur_widget}() { _zsh_highlight_call_widget ${(q)prefix}-${(q)cur_widget} -- \"\$@\" }"
-                    zle -N $cur_widget _zsh_highlight_widget_$prefix-$cur_widget;;
+                    zle -N -- $cur_widget _zsh_highlight_widget_$prefix-$cur_widget;;
 
       # Builtin widget: override and make it call the builtin ".widget".
       builtin) eval "_zsh_highlight_widget_${(q)prefix}-${(q)cur_widget}() { _zsh_highlight_call_widget .${(q)cur_widget} -- \"\$@\" }"
-               zle -N $cur_widget _zsh_highlight_widget_$prefix-$cur_widget;;
+               zle -N -- $cur_widget _zsh_highlight_widget_$prefix-$cur_widget;;
 
       # Incomplete or nonexistent widget: Bind to z-sy-h directly.
       *) 
          if [[ $cur_widget == zle-* ]] && [[ -z $widgets[$cur_widget] ]]; then
            _zsh_highlight_widget_${cur_widget}() { :; _zsh_highlight }
-           zle -N $cur_widget _zsh_highlight_widget_$cur_widget
+           zle -N -- $cur_widget _zsh_highlight_widget_$cur_widget
          else
       # Default: unhandled case.
            print -r -- >&2 "zsh-syntax-highlighting: unhandled ZLE widget ${(qq)cur_widget}"
@@ -308,13 +308,16 @@ zmodload zsh/parameter 2>/dev/null
 zmodload zsh/system 2>/dev/null
 
 autoload -Uz -- is-at-least fast-theme fast-read-ini-file -fast-run-git-command -fast-make-targets \
-                -fast-run-command
-autoload -Uz -- chroma/-git.ch chroma/-hub.ch chroma/-lab.ch chroma/-example.ch chroma/-grep.ch chroma/-perl.ch chroma/-make.ch \
-                chroma/-awk.ch chroma/-vim.ch chroma/-source.ch chroma/-sh.ch chroma/-docker.ch \
-                chroma/-autoload.ch chroma/-ssh.ch chroma/-scp.ch chroma/-which.ch chroma/-printf.ch \
-                chroma/-ruby.ch chroma/-whatis.ch chroma/-alias.ch chroma/-subcommand.ch \
-                chroma/-autorandr.ch chroma/-nmcli.ch chroma/-fast-theme.ch chroma/-node.ch \
-                chroma/-fpath_peq.ch
+                -fast-run-command -fast-zts-read-all
+autoload -Uz -- chroma/-git.ch chroma/-hub.ch chroma/-lab.ch chroma/-example.ch \
+                chroma/-grep.ch chroma/-perl.ch chroma/-make.ch chroma/-awk.ch \
+                chroma/-vim.ch chroma/-source.ch chroma/-sh.ch chroma/-docker.ch \
+                chroma/-autoload.ch chroma/-ssh.ch chroma/-scp.ch chroma/-which.ch \
+                chroma/-printf.ch chroma/-ruby.ch chroma/-whatis.ch chroma/-alias.ch \
+                chroma/-subcommand.ch chroma/-autorandr.ch chroma/-nmcli.ch \
+                chroma/-fast-theme.ch chroma/-node.ch chroma/-fpath_peq.ch \
+                chroma/-precommand.ch chroma/-subversion.ch chroma/-ionice.ch \
+                chroma/-nice.ch chroma/main-chroma.ch chroma/-ogit.ch
 
 source "${0:h}/fast-highlight"
 source "${0:h}/fast-string-highlight"

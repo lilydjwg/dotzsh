@@ -18,6 +18,7 @@ Feature rich syntax highlighting for Zsh.
 
 ### Table of Contents
 
+- [News](#news)
 - [Installation](#installation)
 - [Features](#features)
 - [Performance](#performance)
@@ -27,6 +28,15 @@ Feature rich syntax highlighting for Zsh.
 - [Changelog](https://github.com/zdharma/fast-syntax-highlighting/blob/master/CHANGELOG.md)
 - [Theme Guide](https://github.com/zdharma/fast-syntax-highlighting/blob/master/THEME_GUIDE.md)
 - [Chroma Guide](https://github.com/zdharma/fast-syntax-highlighting/blob/master/CHROMA_GUIDE.adoc)
+
+# News
+
+* 15-06-2019
+  - A new architecture for defining the highlighting for **specific commands**: it now
+    uses **abstract definitions** instead of **top-down, regular code**. The first effect
+    is the highlighting for the `git` command it is now **maximally faithful**, it
+    follows the `git` command almost completely.
+    [Screencast](https://asciinema.org/a/253411)
 
 # Installation
 
@@ -140,6 +150,8 @@ Comparing to the project `zsh-users/zsh-syntax-highlighting` (the upper line):
 
 ### Strings
 
+Exact highlighting that recognizes quotings.
+
 <div style="width:100%;background-color:black;border:3px solid black;border-radius:6px;margin:5px 0;padding:2px 5px">
   <img
     src="https://raw.githubusercontent.com/zdharma/fast-syntax-highlighting/master/images/ideal-string.png"
@@ -219,7 +231,7 @@ Highlighting that is specific for a given command.
 
 The [chromas](https://github.com/zdharma/fast-syntax-highlighting/tree/master/chroma)
 that are enabled by default can be found
-[here](https://github.com/zdharma/fast-syntax-highlighting/blob/master/fast-highlight#L156).
+[here](https://github.com/zdharma/fast-syntax-highlighting/blob/master/fast-highlight#L166).
 
 ### Math-mode highlighting
 
@@ -249,5 +261,3 @@ Performance differences can be observed in this Asciinema recording, where a `10
     <img src="https://asciinema.org/a/112367.png" alt="asciicast">
   </a>
 </div>
-
-
