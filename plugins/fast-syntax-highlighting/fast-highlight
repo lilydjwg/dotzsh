@@ -238,7 +238,7 @@ FAST_HIGHLIGHT+=(
   chroma-systemctl     chroma/-subcommand.ch
   chroma-asciinema     chroma/-subcommand.ch
   chroma-ipfs          chroma/-subcommand.ch
-  chroma-zplugin       chroma/-subcommand.ch
+  chroma-zplugin       chroma/main-chroma.ch%zplugin
   chroma-aspell        chroma/-subcommand.ch
   chroma-bspc          chroma/-subcommand.ch
   chroma-cryptsetup    chroma/-subcommand.ch
@@ -433,6 +433,9 @@ typeset -ga ZLAST_COMMANDS
   FAST_HIGHLIGHT[chroma-autoload-elements]=""
   # Restart FPATH elements gathering
   FAST_HIGHLIGHT[chroma-fpath_peq-elements]=""
+  # Restart svn zplugin's ICE gathering
+  FAST_HIGHLIGHT[chroma-zplugin-ice-elements-svn]=0
+  FAST_HIGHLIGHT[chroma-zplugin-ice-elements-id-as]=""
 
   [[ -n $ZCALC_ACTIVE ]] && {
     _start_pos=0; _end_pos=__len; __arg=$__buf
@@ -852,6 +855,7 @@ typeset -ga ZLAST_COMMANDS
                  already_added=1
                  ;;
         [\"\']*|[^\"\\]##([\\][\\])#\"*|[^\'\\]##([\\][\\])#\'*)
+                 # 256 is eval-mode
                  if (( this_word & 256 )) && [[ $__arg = [\'\"]* ]]; then
                    (( __start=_start_pos-__PBUFLEN, __end=_end_pos-__PBUFLEN, __start >= 0 )) && \
                      reply+=("$__start $__end ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}recursive-base]}")
@@ -930,7 +934,21 @@ typeset -ga ZLAST_COMMANDS
                  # Counting complex brackets (for brackets-highlighter): 10. )) for as-argument $((
                  _FAST_COMPLEX_BRACKETS+=( $__start $(( __start + 1 )) )
                  ;;
-        '`'*)    __style=${FAST_THEME_NAME}back-quoted-argument;;
+        '`'*)
+                 (( __start=_start_pos-__PBUFLEN, __end=_end_pos-__PBUFLEN, __start >= 0 )) && \
+                   reply+=("$__start $__end ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}back-quoted-argument]}")
+                 if [[ -n ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}secondary]} ]]; then
+                   __idx=1
+                   _mybuf=$FAST_THEME_NAME
+                   FAST_THEME_NAME=${${${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}secondary]}:t:r}#(XDG|LOCAL|HOME|OPT):}
+                   (( ${+FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}default]} )) || source $FAST_WORK_DIR/secondary_theme.zsh
+                 else
+                   __idx=0
+                 fi
+                 -fast-highlight-process "$PREBUFFER" ${${__arg%[\`]}#[\`]} $(( _start_pos + 1 ))
+                 (( __idx )) && FAST_THEME_NAME=$_mybuf
+                 already_added=1
+          ;;
         '((')    # 'F' - (( after for
                  (( this_word & 32 )) && {
                    braces_stack='F'$braces_stack
@@ -1081,10 +1099,19 @@ typeset -ga ZLAST_COMMANDS
         if (( this_word & BIT_case_nempty_item == 0 )) && [[ $__arg = "esac" ]]; then
           (( next_word = 1 ))
           __style=${FAST_THEME_NAME}reserved-word
-        elif [[ $__arg = [\)\(] ]]; then
-          __style=${FAST_THEME_NAME}case-parentheses
-          [[ $__arg = \) ]] && (( next_word = BIT_case_code | 1 )) || (( next_word = BIT_case_item | BIT_case_nempty_item ))
+        elif [[ $__arg = (\(*\)|\)|\() ]]; then
+          [[ $__arg = *\) ]] && (( next_word = BIT_case_code | 1 )) || (( next_word = BIT_case_item | BIT_case_nempty_item ))
           _FAST_COMPLEX_BRACKETS+=( $(( _start_pos-__PBUFLEN )) )
+          (( ${#__arg} > 1 )) && {
+            _FAST_COMPLEX_BRACKETS+=( $(( _start_pos+${#__arg}-1-__PBUFLEN )) )
+            (( __start=_start_pos-__PBUFLEN, __end=_end_pos-__PBUFLEN, __start >= 0 )) && \
+              reply+=("$__start $__end ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}case-parentheses]}")
+            (( __start=_start_pos+1-__PBUFLEN, __end=_end_pos-1-__PBUFLEN, __start >= 0 )) && \
+              reply+=("$__start $__end ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}case-condition]}")
+            already_added=1
+          } || {
+            __style=${FAST_THEME_NAME}case-parentheses
+          }
         else
           (( next_word = BIT_case_item | BIT_case_nempty_item ))
           __style=${FAST_THEME_NAME}case-condition
@@ -1160,8 +1187,16 @@ typeset -ga ZLAST_COMMANDS
   done
 
   # Run on fake buffer with replaced parentheses: ")" into "x"
-  __inputs=( ${(0)${(S)_mybuf//(#b)*\$\(([^\)]#)(\)|(#e))/${mbegin[1]};${mend[1]}${__nul}}%$__nul*} )
-  if [[ ${__inputs[1]} != $_mybuf ]]; then
+  if [[ "$_mybuf" = *$__nul* ]]; then
+    # Try to avoid conflict with the \0, however
+    # we have to split at *some* character - \7
+    # is ^G, so one cannot have null and ^G at
+    # the same time on the command line
+    __nul=$'\7'
+  fi
+
+  __inputs=( ${(ps:$__nul:)${(S)_mybuf//(#b)*\$\(([^\)]#)(\)|(#e))/${mbegin[1]};${mend[1]}${__nul}}%$__nul*} )
+  if [[ "${__inputs[1]}" != "$_mybuf" && -n "${__inputs[1]}" ]]; then
     if [[ -n ${FAST_HIGHLIGHT_STYLES[${FAST_THEME_NAME}secondary]} ]]; then
       __idx=1
       __tmp=$FAST_THEME_NAME
