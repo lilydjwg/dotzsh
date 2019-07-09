@@ -663,7 +663,13 @@ duppkg4repo () { #软件仓库中重复的软件包 {{{2
   LANG=C pacman -Si ${=pkgs} | awk -vself=$repo '/^Repository/{ repo=$3; } /^Name/ && repo != self { printf("%s/%s\n", repo, $3); }'
 }
 try_until_succeed () { #反复重试，直到成功 {{{2
-  while ! $*; do :; done
+  local i=1
+  while true; do
+    echo "Try $i at $(date)."
+    $* && break
+    (( i+=1 ))
+    echo
+  done
 }
 test_url_resolves_to () { # {{{2
   url=$1
