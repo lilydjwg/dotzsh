@@ -127,7 +127,6 @@ compdef downgrade=pactree 2>/dev/null
 # not only pdf files
 compdef -d evince
 compdef _gnu_generic exa pamixer
-compdef whoneeds=pactree 2>/dev/null
 
 # 我的自动补全 {{{2
 zstyle ':completion:*:*:pdf2png:*' file-patterns \
@@ -662,7 +661,7 @@ duppkg4repo () { #软件仓库中重复的软件包 {{{2
   [[ -z $pkgs ]] && return 0
   LANG=C pacman -Si ${=pkgs} | awk -vself=$repo '/^Repository/{ repo=$3; } /^Name/ && repo != self { printf("%s/%s\n", repo, $3); }'
 }
-try_until_succeed () { #反复重试，直到成功 {{{2
+try_until_success () { #反复重试，直到成功 {{{2
   local i=1
   while true; do
     echo "Try $i at $(date)."
@@ -671,6 +670,7 @@ try_until_succeed () { #反复重试，直到成功 {{{2
     echo
   done
 }
+compdef try_until_success=command
 test_url_resolves_to () { # {{{2
   url=$1
   ip=$2
