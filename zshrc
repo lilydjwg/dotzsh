@@ -353,7 +353,6 @@ alias mytex=". ~/soft/context/tex/setuptex"
     openssl s_client -connect $domain:443 -servername $domain <<<'' | ascii2uni -qa7
   }
 }
-(( $+commands[trans] )) && alias trans='proxychains -q trans'
 (( $+commands[diff-so-fancy] )) && alias diff-so-fancy='diff-so-fancy | less'
 [[ -d /home/startcom ]] && alias startcom='sudo machinectl shell --setenv=LANGUAGE=$LANGUAGE --setenv=LANG=$LANG --setenv=DISPLAY=$DISPLAY --setenv=GTK_IM_MODULE=xim --setenv=QT_IM_MODULE=xim --setenv=XMODIFIERS=$XMODIFIERS startcom@ /usr/bin/firefox --no-remote'
 (( $+commands[nvim] )) && alias nv=nvim
@@ -672,10 +671,12 @@ try_until_success () { #反复重试，直到成功 {{{2
 }
 compdef try_until_success=command
 test_url_resolves_to () { # {{{2
-  url=$1
-  ip=$2
-  host=${${url#*//}%%/*}
-  curl -v -i --resolve $host:80:$ip --resolve $host:443:$ip $url
+  local url=$1
+  local ip=$2
+  local host=${${url#*//}%%/*}
+  shift
+  shift
+  curl -v -i --resolve $host:80:$ip --resolve $host:443:$ip $url "$@"
 }
 install_autojump () { # autojump 快速安装 {{{2
   mkdir -p ~/.local/bin ${_zdir}/.zsh/Completion
