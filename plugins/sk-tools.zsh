@@ -56,7 +56,7 @@ sk-search-history () {
 sk-cd () {
   local dir
   dir=$(sort -nr ~/.local/share/autojump/autojump.txt | \
-    awk '{print $2}' | \
+    cut -f2- | \
     sk -e --tiebreak index --height $(__calc_height) --reverse -p 'cd> ')
   if [[ -n $dir ]]; then
     zle push-line
