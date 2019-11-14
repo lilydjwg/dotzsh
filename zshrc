@@ -223,6 +223,15 @@ bindkey -s "^Xc" "tmux attach -d^M"
 bindkey '^[p' up-line-or-search
 bindkey '^[n' down-line-or-search
 
+# add a command line to the shells history without executing it
+commit-to-history () {
+  print -s ${(z)BUFFER}
+  zle send-break
+}
+zle -N commit-to-history
+bindkey -M viins "^x^h" commit-to-history
+bindkey -M emacs "^x^h" commit-to-history
+
 # jump to a position in a command line {{{2
 # https://github.com/scfrazer/zsh-jump-target
 autoload -Uz jump-target
