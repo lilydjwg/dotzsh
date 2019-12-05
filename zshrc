@@ -679,14 +679,6 @@ try_until_success () { #反复重试，直到成功 {{{2
   done
 }
 compdef try_until_success=command
-test_url_resolves_to () { # {{{2
-  local url=$1
-  local ip=$2
-  local host=${${url#*//}%%/*}
-  shift
-  shift
-  curl -v -i --resolve $host:80:$ip --resolve $host:443:$ip $url "$@"
-}
 install_autojump () { # autojump 快速安装 {{{2
   mkdir -p ~/.local/bin ${_zdir}/.zsh/Completion
   pushd ~/.local/bin > /dev/null
