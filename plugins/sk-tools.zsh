@@ -26,7 +26,7 @@ sk-vim-mru () {
   local file cmd
   cmd=${1:-vim}
   file=$(tail -n +2 ~/.vim/vim_mru_files | \
-    sk -e --tiebreak index --height $(__calc_height) --reverse -p "$cmd> ")
+    sk --no-mouse -e --tiebreak index --height $(__calc_height) --reverse -p "$cmd> ")
   if [[ -n $file ]]; then
     ${=cmd} $file
   else
@@ -37,7 +37,7 @@ sk-vim-mru () {
 sk-search-history () {
   local cmd
   cmd=$(history -n 1 | \
-    sk -e --tac --tiebreak index --height $(__calc_height) --reverse -p 'cmd> ' \
+    sk --no-mouse -e --tac --tiebreak index --height $(__calc_height) --reverse -p 'cmd> ' \
     --preview 'echo {}' --preview-window=down:3:wrap \
     --query "$BUFFER" --print-query)
   if [[ $cmd == *$'\n'* ]]; then
@@ -57,7 +57,7 @@ sk-cd () {
   local dir
   dir=$(sort -nr ~/.local/share/autojump/autojump.txt | \
     cut -f2- | \
-    sk -e --tiebreak index --height $(__calc_height) --reverse -p 'cd> ')
+    sk --no-mouse -e --tiebreak index --height $(__calc_height) --reverse -p 'cd> ')
   if [[ -n $dir ]]; then
     zle push-line
     zle redisplay
