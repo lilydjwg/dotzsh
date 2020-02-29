@@ -132,7 +132,7 @@ compdef _gnu_generic exa pamixer
 zstyle ':completion:*:*:pdf2png:*' file-patterns \
   '*.pdf:pdf-files:pdf\ files *(-/):directories:directories'
 zstyle ':completion:*:*:x:*' file-patterns \
-  '*.{7z,bz2,gz,rar,tar,tbz,tgz,zip,chm,xz,zst,exe,xpi,apk,maff,crx}:compressed-files:compressed\ files *(-/):directories:directories'
+  '*.{7z,bz2,gz,rar,tar,tbz,tgz,zip,chm,xz,zst,exe,xpi,apk,maff,crx,deb}:compressed-files:compressed\ files *(-/):directories:directories'
 zstyle ':completion:*:*:evince:*' file-patterns \
   '*.{pdf,ps,eps,dvi,djvu,pdf.gz,ps.gz,dvi.gz}:documents:documents *(-/):directories:directories'
 zstyle ':completion:*:*:gbkunzip:*' file-patterns '*.zip:zip-files:zip\ files *(-/):directories:directories'
@@ -818,6 +818,15 @@ READNULLCMD=less
 watch=(notme root)
 WATCHFMT='%n has %a %l from %M'
 REPORTTIME=5
+
+() { # TIMEFMT {{{3
+  autoload -Uz colors
+  colors
+  local white_b=$fg_bold[white] blue=$fg_bold[blue] rst=$reset_color
+  TIMEFMT=("== TIME REPORT FOR $white_b%J$rst =="$'\n'
+    "  User: $blue%U$rst"$'\t'"System: $blue%S$rst  Total: $blue%*Es${rst}"$'\n'
+    "  CPU:  $blue%P$rst"$'\t'"Mem:    $blue%M MiB$rst")
+}
 
 # TeX{{{2
 export TEXMFCACHE=${XDG_CACHE_HOME:-$HOME/.cache}
