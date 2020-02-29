@@ -42,19 +42,24 @@ sk-vim-mru () {
 }
 
 sk-search-history () {
-  local cmd
-  cmd=$(history -n 1 | \
-    __sk --tac --reverse -p 'cmd> ' \
+  local cmd n match
+  cmd=$(history 1 | sed 's/^\s*//' | \
+    __sk --with-nth=2.. --tac --reverse -p 'cmd> ' \
     --preview 'echo {}' --preview-window=down:3:wrap \
     --query "$BUFFER" --print-query)
   if [[ $cmd == *$'\n'* ]]; then
-    BUFFER=${cmd#*$'\n'}
-    BUFFER=${BUFFER//\\n/$'\n'}
+    cmd=${cmd#*$'\n'}
+    [[ $cmd == (#b)\ #([0-9]##)\ ##(*) ]]
+    n=$match[1]
+    cmd=$match[2]
+
+    HISTNO=$n
+    BUFFER=${cmd//\\n/$'\n'}
+    (( CURSOR = $#BUFFER ))
   else
     # FIXME: can't get query string
     # BUFFER=$cmd
   fi
-  (( CURSOR = $#BUFFER ))
   # on the successful branch: for syntax highlight
   # the other: fix prompt
   zle redisplay
