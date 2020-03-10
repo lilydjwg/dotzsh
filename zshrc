@@ -73,10 +73,10 @@ zstyle ':completion:*:*:*:*:processes' force-list always
 zstyle ':completion:*:processes-names' command  'ps c -u ${USER} -o command | uniq'
 
 # 警告显示为红色
-zstyle ':completion:*:warnings' format $'\e[01;31m -- No Matches Found --\e[0m'
+zstyle ':completion:*:warnings' format $'\e[91m -- No Matches Found --\e[0m'
 # 描述显示为淡色
 zstyle ':completion:*:descriptions' format $'\e[2m -- %d --\e[0m'
-zstyle ':completion:*:corrections' format $'\e[01;33m -- %d (errors: %e) --\e[0m'
+zstyle ':completion:*:corrections' format $'\e[93m -- %d (errors: %e) --\e[0m'
 
 # cd 补全顺序
 zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
@@ -92,7 +92,7 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' group-name ''
 # 歧义字符加粗（使用「true」来加下划线）；会导致原本的高亮失效
 # http://www.thregr.org/~wavexx/rnd/20141010-zsh_show_ambiguity/
-# zstyle ':completion:*' show-ambiguity '1;37'
+# zstyle ':completion:*' show-ambiguity '97'
 # _extensions 为 *. 补全扩展名
 # 在最后尝试使用文件名
 if [[ $ZSH_VERSION =~ '^[0-4]\.' || $ZSH_VERSION =~ '^5\.0\.[0-5]' ]]; then
@@ -805,12 +805,12 @@ fi
 setopt PROMPT_SUBST
 E=$'\x1b'
 # reset on the second line to make it the same in tmux + ncurses 6.0
-PS1="%{${E}[2m%}%h $ZSH_PS_HOST%(?..%{${E}[1;31m%}%?%{${E}[0m%} )%{${E}[2;32m%}%~\$_current_branch
-%{${E}[0m%}%(!.%{${E}[0;31m%}###.%{${E}[1;34m%}>>>)%{${E}[0m%} "
+PS1="%{${E}[2m%}%h $ZSH_PS_HOST%(?..%{${E}[91m%}%?%{${E}[0m%} )%{${E}[2;32m%}%~\$_current_branch
+%{${E}[0m%}%(!.%{${E}[0;31m%}###.%{${E}[94m%}>>>)%{${E}[0m%} "
 # 次提示符：使用暗色
 PS2="%{${E}[2m%}%_>%{${E}[0m%} "
 # 右边的提示
-RPS1="%(1j.%{${E}[1;33m%}%j .)%{${E}[m%}%T"
+RPS1="%(1j.%{${E}[93m%}%j .)%{${E}[m%}%T"
 unset E
 
 CORRECT_IGNORE='_*'
@@ -846,8 +846,8 @@ else
 fi
 if [[ -n $DISPLAY || -n $SSH_CONNECTION ]]; then
   # 让 less 将粗体/下划线等显示为彩色
-  export LESS_TERMCAP_mb=$'\x1b[01;31m'
-  export LESS_TERMCAP_md=$'\x1b[01;38;5;74m'
+  export LESS_TERMCAP_mb=$'\x1b[91m'
+  export LESS_TERMCAP_md=$'\x1b[94m'
   export LESS_TERMCAP_me=$'\x1b[0m'
   export LESS_TERMCAP_se=$'\x1b[0m'
   export LESS_TERMCAP_so=$'\x1b[7m'
