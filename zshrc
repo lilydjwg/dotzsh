@@ -847,7 +847,7 @@ fi
 if [[ -n $DISPLAY || -n $SSH_CONNECTION ]]; then
   # 让 less 将粗体/下划线等显示为彩色
   export LESS_TERMCAP_mb=$'\x1b[91m'
-  export LESS_TERMCAP_md=$'\x1b[94m'
+  export LESS_TERMCAP_md=$'\x1b[38;5;74m'
   export LESS_TERMCAP_me=$'\x1b[0m'
   export LESS_TERMCAP_se=$'\x1b[0m'
   export LESS_TERMCAP_so=$'\x1b[7m'
