@@ -54,11 +54,28 @@ And add the following to your `zshrc` file.
 source ~/path/to/fsh/fast-syntax-highlighting.plugin.zsh
 ```
 
-### [Zplugin](https://github.com/psprint/zplugin) (Recommended)
+### Zinit
 
 Add the following to your `zshrc` file.
+
 ```zsh
-zplugin light zdharma/fast-syntax-highlighting
+zinit light zdharma/fast-syntax-highlighting
+```
+
+Here's an example of how to load the plugin together with a few other popular
+ones with the use of
+[Turbo](https://zdharma.org/zinit/wiki/INTRODUCTION/#turbo_mode_zsh_62_53),
+i.e.: speeding up the Zsh startup by loading the plugin right after the first
+prompt, in background:
+
+```zsh
+zinit wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+    zdharma/fast-syntax-highlighting \
+ blockf \
+    zsh-users/zsh-completions \
+ atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions
 ```
 
 ### Antigen
@@ -74,7 +91,7 @@ antigen bundle zdharma/fast-syntax-highlighting
 Add the following to your `.zshrc` file in the same place you're doing
 your other `zgen load` calls in.
 
-```
+```zsh
 zgen load zdharma/fast-syntax-highlighting
 ```
 
@@ -82,9 +99,10 @@ zgen load zdharma/fast-syntax-highlighting
 ### Oh-My-Zsh
 
 Clone the Repository.
-```
+
+```zsh
 git clone https://github.com/zdharma/fast-syntax-highlighting.git \
-  ~/.oh-my-zsh/custom/plugins/fast-syntax-highlighting
+  ~ZSH_CUSTOM/plugins/fast-syntax-highlighting
 ```
 
 And add `fast-syntax-highlighting` to your plugin list.
@@ -265,8 +283,8 @@ Performance differences can be observed in this Asciinema recording, where a `10
 
 ## IRC Channel
 
-Channel `#zplugin@freenode` is a support place for all author's projects. Connect to:
-[chat.freenode.net:6697](ircs://chat.freenode.net:6697/%23zplugin) (SSL) or [chat.freenode.net:6667](irc://chat.freenode.net:6667/%23zplugin)
- and join #zplugin.
+Channel `#zinit@freenode` is a support place for all author's projects. Connect to:
+[chat.freenode.net:6697](ircs://chat.freenode.net:6697/%23zinit) (SSL) or [chat.freenode.net:6667](irc://chat.freenode.net:6667/%23zinit)
+ and join #zinit.
 
-Following is a quick access via Webchat [![IRC](https://kiwiirc.com/buttons/chat.freenode.net/zplugin.png)](https://kiwiirc.com/client/chat.freenode.net:+6697/#zplugin)
+Following is a quick access via Webchat [![IRC](https://kiwiirc.com/buttons/chat.freenode.net/zinit.png)](https://kiwiirc.com/client/chat.freenode.net:+6697/#zinit)
