@@ -481,7 +481,7 @@ hash -d target="$HOME/.cache/rust-target"
 
 # 全局别名 {{{2
 # 当前目录下最后修改的文件
-# 来自 http://roylez.heroku.com/2010/03/06/zsh-recent-file-alias.html
+# 来自 https://roylez.info/2010-03-06-zsh-recent-file-alias/
 alias -g NN="*(oc[1])"
 alias -g NNF="*(oc[1].)"
 alias -g NND="*(oc[1]/)"
