@@ -884,6 +884,7 @@ if [[ $OS = Linux ]]; then
   fi
   zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 fi
+export GREP_COLORS=ms=91:mc=91:sl=:cx=:fn=35:ln=32:bn=32:se=36
 unset _256colors
 unset _has_re
 # 不同的 OS {{{2
