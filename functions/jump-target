@@ -4,7 +4,7 @@
     typeset -g ZSH_JUMP_TARGET_STYLE
 
     : ${ZSH_JUMP_TARGET_CHOICES:="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"}
-    : ${ZSH_JUMP_TARGET_STYLE:="fg=red,bold,underline"}
+    : ${ZSH_JUMP_TARGET_STYLE:="fg=9,underline"}
 
     local orig_buffer=$BUFFER
     local -a orig_region_highlight
