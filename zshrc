@@ -121,7 +121,6 @@ compdef watch=command
 compdef rlwrap=command
 compdef ptyless=command
 compdef grc=command
-compdef agg=ag 2>/dev/null
 compdef rgg=rg 2>/dev/null
 compdef downgrade=pactree 2>/dev/null
 # not only pdf files
@@ -338,7 +337,6 @@ alias :q="exit"
 alias girl=man
 alias woman=man
 alias 7z="7z '-xr!*~' '-xr!*.swp'"
-alias mytex=". ~/soft/context/tex/setuptex"
 (( $+commands[zhcon] )) && alias zhcon="zhcon --utf8"
 (( $+commands[rlwrap] )) && {
   (( $+commands[ilua] )) && alias ilua='rlwrap ilua'
@@ -352,7 +350,6 @@ alias mytex=". ~/soft/context/tex/setuptex"
 (( $+commands[lre] )) || alias lre='locate -b --regex'
 (( $+commands[lrew] )) || alias lrew='locate --regex'
 (( $+commands[2to3] )) && alias py2to3="2to3 -w --no-diffs -n"
-(( $+commands[you-get] )) && alias you-getp="you-get -p mpv"
 (( $+commands[git] )) && alias gitc="git clone"
 (( $+commands[git] )) && alias git-export="git daemon --export-all --base-path= --reuseaddr --"
 (( $+commands[openssl] )) && {
@@ -363,11 +360,10 @@ alias mytex=". ~/soft/context/tex/setuptex"
   }
 }
 (( $+commands[diff-so-fancy] )) && alias diff-so-fancy='diff-so-fancy | less'
-[[ -d /home/startcom ]] && alias startcom='sudo machinectl shell --setenv=LANGUAGE=$LANGUAGE --setenv=LANG=$LANG --setenv=DISPLAY=$DISPLAY --setenv=GTK_IM_MODULE=xim --setenv=QT_IM_MODULE=xim --setenv=XMODIFIERS=$XMODIFIERS startcom@ /usr/bin/firefox --no-remote'
 (( $+commands[nvim] )) && alias nv=nvim
 # take screenshot to stdout (PNG)
-if (( $+commands[maim] )); then
-  _screenshot="maim -s -l -c 255,0,255,0.15 -k -n 2"
+if (( $+commands[flameshot] )); then
+  _screenshot="flameshot gui -r"
 elif (( $+commands[import] )); then
   _screenshot="import png:-"
 fi
@@ -414,18 +410,12 @@ if [[ $_has_re -eq 1 ]] && \
 fi
 
 alias nicest="nice -n19 ionice -c3"
-alias winxp="VBoxManage startvm WinXP"
-alias winxp2="VBoxManage startvm WinXP_test"
-alias dmount="udisksctl mount --block-device"
 alias ren="vim +'Ren'"
-# 查看进程数最多的程序
-alias topnum="ps -e|sort -k4|awk '{print \$4}'|uniq -c|sort -n|tail"
-alias soul="mplayer -really-quiet -nolirc -loop 0 ~/音乐/_纯音乐/忧伤还是快乐.mp3"
 alias xcp="rsync -aviHAXKhPS --delete --exclude='*~' --exclude=__pycache__"
 alias nonet="HTTP_PROXY='http://localhost:1' HTTPS_PROXY='http://localhost:1' FTP_PROXY='http://localhost:1' http_proxy='http://localhost:1' https_proxy='http://localhost:1' ftp_proxy='http://localhost:1'"
 alias fromgbk="iconv -t latin1 | iconv -f gb18030"
 alias swaptop='watch -n 1 "swapview | tail -\$((\$LINES - 2)) | cut -b -\$COLUMNS"'
-alias pkg-check='comm -23 <(pacman -Qetq|sort) <(awk ''{print $1}'' ~/etc/pkg-why|sort)'
+alias pkg-check='comm -23 <(pacman -Qettq|sort) <(awk ''{print $1}'' ~/etc/pkg-why|sort)'
 alias pkg-check-old='comm -13 <(pacman -Qq|sort) <(awk ''{print $1}'' ~/etc/pkg-why|sort)'
 alias with-github-name='GIT_COMMITTER_NAME=依云 GIT_COMMITTER_EMAIL=lilydjwg@gmail.com GIT_AUTHOR_NAME=依云 GIT_AUTHOR_EMAIL=lilydjwg@gmail.com'
 
@@ -462,16 +452,6 @@ function juser () {
   done
   journalctl -n $((${LINES:=40} - 4)) --user ${^args}
 }
-alias privoxy_log="juser -u privoxy -a -f | ssed -R 's/(?<=\]:) [\d-]+ [\d:.]+ [\da-f]+//'"
-
-# 后缀别名 {{{2
-alias -s xsl="vim"
-alias -s {html,htm}="firefox"
-alias -s {pdf,ps,djvu}="evince"
-alias -s ttf="gnome-font-viewer"
-alias -s {png,jpg,gif}="feh"
-alias -s jar="java -jar"
-alias -s swf="flashplayer"
 
 # 路径别名 {{{2
 hash -d tmp="$HOME/tmpfs"
@@ -648,18 +628,6 @@ xmpphost () { #{{{2 query XMPP SRV records
   host -t SRV _xmpp-client._tcp.$1
   host -t SRV _xmpp-server._tcp.$1
 }
-tianqi () { #天气预报 {{{2
-  local city
-  if [[ $# -eq 1 ]]; then
-    city=$1
-  elif [[ $# -eq 0 ]]; then
-    city=北京
-  else
-    echo "城市？" >&2
-    return 1
-  fi
-  w3m -dump "http://weather1.sina.cn/dpool/weather_new/forecast_new.php?city=$city&vt=4" 2>/dev/null | sed '1,/更换城市/d;/^loading/,$d;s/\[[^]]\+\]//g'
-}
 duppkg4repo () { #软件仓库中重复的软件包 {{{2
   local repo=$1
   [[ -z $repo ]] && { echo >&2 'which repository to examine?'; return 1 }
@@ -684,11 +652,11 @@ compdef try_until_success=command
 install_autojump () { # autojump 快速安装 {{{2
   mkdir -p ~/.local/bin ${_zdir}/.zsh/Completion
   pushd ~/.local/bin > /dev/null
-  wget -N https://github.com/joelthelion/autojump/raw/master/bin/autojump{,_{data,argparse,utils}.py}
+  wget -N https://github.com/wting/autojump/raw/master/bin/autojump{,_{data,argparse,match,utils}.py}
   chmod +x autojump
   popd > /dev/null
-  wget https://github.com/joelthelion/autojump/raw/master/bin/autojump.zsh -O ${_zdir}/.zsh/autojump.zsh
-  wget https://github.com/joelthelion/autojump/raw/master/bin/_j -O ${_zdir}/.zsh/Completion/_j
+  wget https://github.com/wting/autojump/raw/master/bin/autojump.zsh -O ${_zdir}/.zsh/autojump.zsh
+  wget https://github.com/wting/autojump/raw/master/bin/_j -O ${_zdir}/.zsh/Completion/_j
 }
 wait_pid () { # {{{2
   local pid=$1
