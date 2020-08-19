@@ -362,7 +362,9 @@ alias 7z="7z '-xr!*~' '-xr!*.swp'"
 (( $+commands[diff-so-fancy] )) && alias diff-so-fancy='diff-so-fancy | less'
 (( $+commands[nvim] )) && alias nv=nvim
 # take screenshot to stdout (PNG)
-if (( $+commands[flameshot] )); then
+if (( $+commands[maim] )); then
+  _screenshot="maim -s -l -c 255,0,255,0.15 -k -n 2"
+elif (( $+commands[flameshot] )); then
   _screenshot="flameshot gui -r"
 elif (( $+commands[import] )); then
   _screenshot="import png:-"
