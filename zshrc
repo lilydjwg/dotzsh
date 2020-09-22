@@ -886,6 +886,9 @@ if [[ ${chpwd_functions[(i)autojump_chpwd]} -le ${#chpwd_functions} && \
   -d ~/.local/share/autojump && ! -w ~/.local/share/autojump ]]; then
   chpwd_functions[(i)autojump_chpwd]=()
 fi
+if (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh)"
+fi
 
 _plugin=${_zdir}/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 if [[ -f $_plugin ]]; then
