@@ -349,7 +349,6 @@ alias 7z="7z '-xr!*~' '-xr!*.swp'"
 (( $+commands[l] )) || alias l='locate'
 (( $+commands[lre] )) || alias lre='locate -b --regex'
 (( $+commands[lrew] )) || alias lrew='locate --regex'
-(( $+commands[2to3] )) && alias py2to3="2to3 -w --no-diffs -n"
 (( $+commands[git] )) && alias gitc="git clone"
 (( $+commands[git] )) && alias git-export="git daemon --export-all --base-path= --reuseaddr --"
 (( $+commands[openssl] )) && {
@@ -360,7 +359,6 @@ alias 7z="7z '-xr!*~' '-xr!*.swp'"
   }
 }
 (( $+commands[diff-so-fancy] )) && alias diff-so-fancy='diff-so-fancy | less'
-(( $+commands[nvim] )) && alias nv=nvim
 # take screenshot to stdout (PNG)
 if (( $+commands[maim] )); then
   _screenshot="maim -s -l -c 255,0,255,0.15 -k -n 2"
