@@ -303,16 +303,13 @@ sudo-command-line() {
 }
 zle -N sudo-command-line
 bindkey "\e\e" sudo-command-line
-# 插入当前的所有补全 http://www.zsh.org/mla/users/2000/msg00601.html {{{2
-_insert_all_matches () {
-    setopt localoptions nullglob rcexpandparam extendedglob noshglob
-    unsetopt markdirs globsubst shwordsplit nounset ksharrays
-    compstate[insert]=all
-    compstate[old_list]=keep
-    _complete
-}
-zle -C insert-all-matches complete-word _insert_all_matches
-bindkey '^Xi' insert-all-matches
+# 插入当前的所有补全 https://www.zsh.org/mla/workers/2020/index.html {{{2
+zstyle ':completion:all-matches::::' completer _all_matches _complete
+zstyle ':completion:all-matches:*' old-matches true
+zstyle ':completion:all-matches:*' insert true
+zstyle ':completion:all-matches:*' file-patterns '%p:globbed-files' '*(-/):directories' '*:all-files'
+zle -C all-matches complete-word _generic
+bindkey '^Xi' all-matches
 # 别名 {{{1
 # 命令别名 {{{2
 alias ll='ls -lh'
