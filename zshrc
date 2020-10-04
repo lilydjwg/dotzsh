@@ -886,6 +886,11 @@ fi
 if (( $+commands[zoxide] )); then
   eval "$(zoxide init zsh)"
 fi
+# if zoxide loads but the directory is readonly, remove the chpwd hook
+if [[ ${chpwd_functions[(i)__zoxide_hook]} -le ${#chpwd_functions} && \
+  -d ~/.local/share/zoxide && ! -w ~/.local/share/zoxide ]]; then
+  chpwd_functions[(i)__zoxide_hook]=()
+fi
 
 _plugin=${_zdir}/.zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 if [[ -f $_plugin ]]; then
