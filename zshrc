@@ -413,7 +413,7 @@ alias nonet="HTTP_PROXY='http://localhost:1' HTTPS_PROXY='http://localhost:1' FT
 alias fromgbk="iconv -t latin1 | iconv -f gb18030"
 alias swaptop='watch -n 1 "swapview | tail -\$((\$LINES - 2)) | cut -b -\$COLUMNS"'
 alias pkg-check='comm -23 <(pacman -Qettq|sort) <(awk ''{print $1}'' ~/etc/pkg-why|sort)'
-alias pkg-check-old='comm -13 <(pacman -Qq|sort) <(awk ''{print $1}'' ~/etc/pkg-why|sort)'
+alias pkg-check-old='comm -13 <(pacman -Qq|sort) <(awk ''$1 != "#" {print $1}'' ~/etc/pkg-why|sort)'
 alias with-github-name='GIT_COMMITTER_NAME=依云 GIT_COMMITTER_EMAIL=lilydjwg@gmail.com GIT_AUTHOR_NAME=依云 GIT_AUTHOR_EMAIL=lilydjwg@gmail.com'
 
 # for systemd {{{3
