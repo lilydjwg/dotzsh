@@ -408,7 +408,7 @@ fi
 
 alias nicest="nice -n19 ionice -c3"
 alias ren="vim +'Ren'"
-alias xcp="rsync -aviHAXKhPS --delete --exclude='*~' --exclude=__pycache__"
+alias xcp="rsync -aviHAXKhS --one-file-system --partial --info=progress2 --inplace --atimes --open-noatime --delete --exclude='*~' --exclude=__pycache__"
 alias nonet="HTTP_PROXY='http://localhost:1' HTTPS_PROXY='http://localhost:1' FTP_PROXY='http://localhost:1' http_proxy='http://localhost:1' https_proxy='http://localhost:1' ftp_proxy='http://localhost:1'"
 alias fromgbk="iconv -t latin1 | iconv -f gb18030"
 alias swaptop='watch -n 1 "swapview | tail -\$((\$LINES - 2)) | cut -b -\$COLUMNS"'
