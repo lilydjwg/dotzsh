@@ -27,7 +27,7 @@ __sk () {
   if (( $+functions[sk_extra_args] )); then
     args=$(sk_extra_args)
   fi
-  sk --no-mouse -e --tiebreak index --height $(__calc_height) ${=args} "$@"
+  sk --no-mouse -e --no-sort --height $(__calc_height) ${=args} "$@"
 }
 
 sk-vim-mru () {
