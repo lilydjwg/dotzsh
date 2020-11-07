@@ -343,9 +343,14 @@ alias 7z="7z '-xr!*~' '-xr!*.swp'"
 (( $+commands[ccal] )) && alias ccal='ccal -ub'
 (( $+commands[zbarcam] )) && alias zbarcam='LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam'
 (( $+commands[ghc] )) && alias ghc='ghc -i$HOME/scripts/haskell/lib'
-(( $+commands[l] )) || alias l='locate'
-(( $+commands[lre] )) || alias lre='locate -b --regex'
-(( $+commands[lrew] )) || alias lrew='locate --regex'
+if (( $+commands[plocate] )); then
+  mylocate=plocate
+else
+  mylocate=locate
+fi
+(( $+commands[l] )) || alias l=$mylocate
+(( $+commands[lre] )) || alias lre="$mylocate -b --regex"
+(( $+commands[lrew] )) || alias lrew="$mylocate --regex"
 (( $+commands[git] )) && alias gitc="git clone"
 (( $+commands[git] )) && alias git-export="git daemon --export-all --base-path= --reuseaddr --"
 (( $+commands[openssl] )) && {
