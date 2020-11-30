@@ -212,8 +212,8 @@ bindkey -s "\e[Z" "^P"
 bindkey '^Xa' _expand_alias
 bindkey '^[/' _history-complete-older
 bindkey '\e ' set-mark-command
+bindkey '^[w' kill-region
 # 用单引号引起最后一个单词
-# FIXME 如何引起光标处的单词？
 bindkey -s "^['" "^[] ^f^@^e^[\""
 # 打开 zsh 的PDF格式文档
 bindkey -s "^X^D" "evince ~/文档/编程/shell/zsh/zsh.pdf &^M"
