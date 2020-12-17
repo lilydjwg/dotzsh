@@ -231,6 +231,12 @@ zle -N commit-to-history
 bindkey -M viins "^x^h" commit-to-history
 bindkey -M emacs "^x^h" commit-to-history
 
+() {
+  for name in /usr/share/zsh/functions/Misc/run-help-*; do
+    autoload -Uz $name:t
+  done
+}
+
 # jump to a position in a command line {{{2
 # https://github.com/scfrazer/zsh-jump-target
 autoload -Uz jump-target
