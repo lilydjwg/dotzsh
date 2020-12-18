@@ -689,7 +689,6 @@ typeset -U FPATH
 }
 [[ -z $EDITOR ]] && (( $+commands[vim] )) && export EDITOR=vim
 
-[[ -f $_zdir/.zsh/zshrc.local ]] && source $_zdir/.zsh/zshrc.local
 # zsh{{{2
 # 提示符
 # %n --- 用户名
@@ -927,6 +926,8 @@ so $MYVIMRC"
     export VIMTMP=$ZDOTDIR/tmpfs
   }
 fi
+
+[[ -f $_zdir/.zsh/zshrc.local ]] && source $_zdir/.zsh/zshrc.local
 
 unset OS
 setopt nomatch
