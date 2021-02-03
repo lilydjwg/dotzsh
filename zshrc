@@ -928,6 +928,8 @@ so $MYVIMRC"
   }
 fi
 
+[[ -f $_zdir/.zsh/zshrc.local.after ]] && source $_zdir/.zsh/zshrc.local.after
+
 unset OS
 setopt nomatch
 return 0
