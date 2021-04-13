@@ -441,7 +441,7 @@ function juser () {
       if [[ $nextIsService -eq 1 ]]; then
         nextIsService=0
         isfirst=1
-        for g in $(journalctl --user -F _SYSTEMD_CGROUP|command grep -P "^/user\\.slice/user-$UID\\.slice/user@$UID\\.service/$i\."); do
+        for g in $(journalctl --user -F _SYSTEMD_CGROUP|command grep -P "^/user\\.slice/user-$UID\\.slice/user@$UID\\.service/app.slice/$i\."); do
           if [[ isfirst -eq 1 ]]; then
             args=($args _SYSTEMD_CGROUP=$g)
           else
