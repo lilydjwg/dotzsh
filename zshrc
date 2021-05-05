@@ -332,6 +332,7 @@ fi
 if [[ $OS == 'Linux' || $OS == 'FreeBSD' ]]; then
   alias grep='grep --color=auto'
 fi
+alias diff='diff --color=auto'
 alias n='thunar'
 alias py='python3'
 alias svim="vim -i NONE"
@@ -348,7 +349,6 @@ alias 7z="7z '-xr!*~' '-xr!*.swp'"
 (( $+commands[irb] )) && alias irb='irb -r irb/completion'
 (( $+commands[ccal] )) && alias ccal='ccal -ub'
 (( $+commands[zbarcam] )) && alias zbarcam='LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam'
-(( $+commands[ghc] )) && alias ghc='ghc -i$HOME/scripts/haskell/lib'
 if (( $+commands[plocate] )); then
   mylocate=plocate
 else
@@ -366,7 +366,6 @@ fi
     openssl s_client -connect $domain:443 -servername $domain <<<'' | ascii2uni -qa7
   }
 }
-(( $+commands[diff-so-fancy] )) && alias diff-so-fancy='diff-so-fancy | less'
 # take screenshot to stdout (PNG)
 if (( $+commands[maim] )); then
   _screenshot="maim -s -l -c 255,0,255,0.15 -k -n 2"
@@ -465,7 +464,6 @@ function juser () {
 # 路径别名 {{{2
 hash -d tmp="$HOME/tmpfs"
 hash -d py="$HOME/scripts/python"
-hash -d ebook="$HOME/temp/ebook"
 hash -d ff="$HOME/.mozilla/firefox/nightly"
 hash -d target="$HOME/.cache/rust-target"
 
@@ -524,22 +522,6 @@ elif [[ $TERM == screen* ]]; then
   fi
 elif [[ $TERM == tmux* ]]; then
   cursorcolor () { echo -ne "\ePtmux;\e\e]12;$*\007\e\\" }
-fi
-if [[ -d ${VIMTMP:=~/tmpfs} ]]; then # {{{2 record errors from compilers
-  # problems:
-  #   stdout & stderr mixed
-  #   return code
-  _error_command () {
-    eval "
-      $1 () {
-        errfile=\$VIMTMP/.error
-        ptyrun command $@ \"\$@\" > >(tee >(nocolor >\$errfile))
-      }
-    "
-  }
-  # _error_command gcc -g -Wall
-  # _error_command g++ -g -Wall
-  # _error_command cargo
 fi
 ptyrun () { # 使用伪终端代替管道，对 ls 这种“顽固分子”有效 {{{2
   local ptyname=pty-$$
