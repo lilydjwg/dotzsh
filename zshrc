@@ -579,42 +579,6 @@ pid () { #{{{2
 s () {
   find . -name "*$1*"
 }
-killssh () { #{{{2 kill ssh that using default master socket
-  local keys
-  if [[ $# -lt 1 ]]; then
-    keys=('')
-  else
-    keys=$@
-  fi
-
-  for key in "${keys[@]}"; do
-    local pids="$(netstat -nxlp 2>/dev/null | awk -v dir=$(_killssh_dir) -v key=$key \
-      '{if(index($NF, dir"/master-"key) == 1){print $9}}' | grep -o '^[[:digit:]]\+')"
-    [[ -n $pids ]] && kill ${=pids}
-  done
-}
-
-_killssh_dir () {
-  local dir
-  if [[ -n $XDG_RUNTIME_DIR && -d $XDG_RUNTIME_DIR/ssh ]]; then
-    dir=$XDG_RUNTIME_DIR/ssh
-  else
-    dir=$HOME/.ssh
-  fi
-  print $dir
-}
-
-_killssh_items () {
-  netstat -nxlp 2>/dev/null | awk -v dir=$(_killssh_dir) \
-    'BEGIN{P=dir"/master-";L=length(P);}{if(index($NF, P) == 1){a=substr($NF,L+1);sub(/\.[[:alnum:]]+$/,"",a);print a}}'
-}
-
-_killssh () {
-  _arguments \
-    ':what:($(_killssh_items))'
-  return 0
-}
-compdef _killssh killssh
 xmpphost () { #{{{2 query XMPP SRV records
   host -t SRV _xmpp-client._tcp.$1
   host -t SRV _xmpp-server._tcp.$1

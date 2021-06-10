@@ -1,0 +1,25 @@
+#compdef killssh
+
+_killssh_dir () {
+  local dir
+  if [[ -n $XDG_RUNTIME_DIR && -d $XDG_RUNTIME_DIR/ssh ]]; then
+    dir=$XDG_RUNTIME_DIR/ssh
+  else
+    dir=$HOME/.ssh
+  fi
+  print $dir
+}
+
+_killssh_items () {
+  local dir=$(_killssh_dir)
+  ss -nxlp -H "src unix:$dir/master-*" 2>/dev/null | awk -v dir=$dir \
+    'BEGIN{P=dir"/master-";L=length(P);}{a=substr($5,L+1);sub(/\.[[:alnum:]]+$/,"",a);print a}'
+}
+
+_killssh () {
+  _arguments \
+    ':what:($(_killssh_items))'
+  return 0
+}
+
+_killssh "$@"
