@@ -344,7 +344,6 @@ alias 7z="7z '-xr!*~' '-xr!*.swp'"
 (( $+commands[zhcon] )) && alias zhcon="zhcon --utf8"
 (( $+commands[rlwrap] )) && {
   (( $+commands[ilua] )) && alias ilua='rlwrap ilua'
-  (( $+commands[psh] )) && alias psh='rlwrap psh'
 }
 (( $+commands[irb] )) && alias irb='irb -r irb/completion'
 (( $+commands[ccal] )) && alias ccal='ccal -ub'
@@ -420,7 +419,6 @@ alias nicest="nice -n19 ionice -c3"
 alias ren="vim +'Ren'"
 # --inplace has issues with -H https://lists.opensuse.org/opensuse-bugs/2012-10/msg02084.html
 alias xcp="rsync -aviHAXKhS --one-file-system --partial --info=progress2 --atimes --open-noatime --delete --exclude='*~' --exclude=__pycache__"
-alias nonet="HTTP_PROXY='http://localhost:1' HTTPS_PROXY='http://localhost:1' FTP_PROXY='http://localhost:1' http_proxy='http://localhost:1' https_proxy='http://localhost:1' ftp_proxy='http://localhost:1'"
 alias fromgbk="iconv -t latin1 | iconv -f gb18030"
 alias swaptop='watch -n 1 "swapview | tail -\$((\$LINES - 2)) | cut -b -\$COLUMNS"'
 alias pkg-check='comm -23 <(pacman -Qettq|sort) <(awk ''{print $1}'' ~/etc/pkg-why|sort)'
