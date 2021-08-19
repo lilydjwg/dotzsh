@@ -67,8 +67,7 @@ sk-search-history () {
 
 sk-cd () {
   local dir
-  dir=$(sort -nr ~/.local/share/autojump/autojump.txt | \
-    cut -f2- | __sk --reverse -p 'cd> ')
+  dir=$(zoxide query -l | __sk --reverse -p 'cd> ')
   if [[ -n $dir ]]; then
     zle push-line
     zle redisplay
