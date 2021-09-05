@@ -848,6 +848,9 @@ if (( $+commands[zoxide] )); then
       __zoxide_z "$@"
     fi
   }
+  if [[ -z $functions[j] ]]; then
+    alias j=z
+  fi
 fi
 # if zoxide loads but the directory is readonly, remove the chpwd hook
 if [[ ${chpwd_functions[(i)__zoxide_hook]} -le ${#chpwd_functions} && \
