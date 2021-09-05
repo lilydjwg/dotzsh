@@ -841,6 +841,13 @@ if [[ ${chpwd_functions[(i)autojump_chpwd]} -le ${#chpwd_functions} && \
 fi
 if (( $+commands[zoxide] )); then
   eval "$(zoxide init zsh)"
+  function z () {
+    if [[ "$#" -eq 0 ]]; then
+      __zoxide_z ''
+    else
+      __zoxide_z "$@"
+    fi
+  }
 fi
 # if zoxide loads but the directory is readonly, remove the chpwd hook
 if [[ ${chpwd_functions[(i)__zoxide_hook]} -le ${#chpwd_functions} && \
