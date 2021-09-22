@@ -415,6 +415,22 @@ if [[ $_has_re -eq 1 ]] && \
   unset match
 fi
 
+_makepkg_prefix=(
+  bwrap --unshare-all --share-net --die-with-parent
+  --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp
+  --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64
+  --ro-bind /var/lib/pacman /var/lib/pacman --ro-bind ~/.ccache ~/.ccache --bind ~/.cache/ccache ~/.cache/ccache
+  # work around https://github.com/containers/bubblewrap/issues/395#issuecomment-771159189
+  --setenv FAKEROOTDONTTRYCHOWN 1
+)
+makepkg () {
+  ${_makepkg_prefix[@]} --bind $PWD $PWD /usr/bin/makepkg
+}
+compdef makepkg=makepkg
+updpkgsums () {
+  ${_makepkg_prefix[@]} --bind $PWD $PWD /usr/bin/updpkgsums
+}
+
 alias nicest="nice -n19 ionice -c3"
 alias ren="vim +'Ren'"
 # --inplace has issues with -H https://lists.opensuse.org/opensuse-bugs/2012-10/msg02084.html
