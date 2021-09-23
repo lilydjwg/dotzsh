@@ -424,7 +424,7 @@ _makepkg_prefix=(
   --setenv FAKEROOTDONTTRYCHOWN 1
 )
 makepkg () {
-  ${_makepkg_prefix[@]} --bind $PWD $PWD /usr/bin/makepkg
+  ${_makepkg_prefix[@]} --bind $PWD $PWD /usr/bin/makepkg "$@"
 }
 compdef makepkg=makepkg
 updpkgsums () {
