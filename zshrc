@@ -419,16 +419,33 @@ _makepkg_prefix=(
   bwrap --unshare-all --share-net --die-with-parent
   --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp
   --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64
-  --ro-bind /var/lib/pacman /var/lib/pacman --ro-bind ~/.ccache ~/.ccache --bind ~/.cache/ccache ~/.cache/ccache
+  --ro-bind /var/lib/pacman /var/lib/pacman --ro-bind ~/.ccache ~/.ccache --bind ~/.cache ~/.cache
+  --bind ~/.makepkg/gnupg "$HOME/.gnupg"
   # work around https://github.com/containers/bubblewrap/issues/395#issuecomment-771159189
   --setenv FAKEROOTDONTTRYCHOWN 1
 )
 makepkg () {
+  mkdir -m 700 -p ~/.makepkg/gnupg
   ${_makepkg_prefix[@]} --bind $PWD $PWD /usr/bin/makepkg "$@"
 }
 compdef makepkg=makepkg
 updpkgsums () {
+  mkdir -m 700 -p ~/.makepkg/gnupg
   ${_makepkg_prefix[@]} --bind $PWD $PWD /usr/bin/updpkgsums
+}
+makepkg-recvkeys () {
+  mkdir -m 700 -p ~/.makepkg/gnupg
+  ${_makepkg_prefix[@]} --bind $PWD $PWD /usr/bin/bash <<'EOF'
+. /usr/share/makepkg/util.sh
+. ./PKGBUILD
+for key in "${validpgpkeys[@]}"; do
+  echo "Receiving key ${key}..."
+  # try both servers as some keys exist one place and others another
+  # we also want to always try to receive keys to pick up any update
+  gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys "$key" || true
+  gpg --keyserver hkps://keys.openpgp.org --recv-keys "$key" || true
+done
+EOF
 }
 
 alias nicest="nice -n19 ionice -c3"
