@@ -882,7 +882,13 @@ if (( $+commands[zoxide] )) && [[ $(zstat +uid ~/.local/share/zoxide/db.zo) == $
     fi
   }
   if [[ -z $functions[j] ]]; then
-    alias j=z
+    function j () {
+      if [[ -t 1 ]]; then
+        z "$@"
+      else
+        zoxide query "$@"
+      fi
+    }
   fi
 fi
 # if zoxide loads but the directory is readonly, remove the chpwd hook
