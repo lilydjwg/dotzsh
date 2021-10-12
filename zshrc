@@ -872,7 +872,7 @@ if [[ ${chpwd_functions[(i)autojump_chpwd]} -le ${#chpwd_functions} && \
   -d ~/.local/share/autojump && ! -w ~/.local/share/autojump ]]; then
   chpwd_functions[(i)autojump_chpwd]=()
 fi
-if (( $+commands[zoxide] )); then
+if (( $+commands[zoxide] )) && [[ $(zstat +uid ~/.local/share/zoxide/db.zo) == $UID ]]; then
   eval "$(zoxide init zsh)"
   function z () {
     if [[ "$#" -eq 0 ]]; then
