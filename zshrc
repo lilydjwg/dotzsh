@@ -811,7 +811,7 @@ if [[ -n $DISPLAY || -n $SSH_CONNECTION ]]; then
   if [[ $TERM == linux ]]; then
     _256colors=0
   else
-    [[ $TERM != *color* && $TERM != alacritty ]] && export TERM=${TERM%%[.-]*}-256color
+    [[ $TERM != *color* && $TERM != alacritty && $TERM != dumb ]] && export TERM=${TERM%%[.-]*}-256color
     _256colors=1
   fi
 else
