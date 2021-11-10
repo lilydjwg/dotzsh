@@ -365,23 +365,7 @@ fi
     openssl s_client -connect $domain:443 -servername $domain <<<'' | ascii2uni -qa7
   }
 }
-# take screenshot to stdout (PNG)
-if (( $+commands[maim] )); then
-  _screenshot="maim -s -l -c 255,0,255,0.15 -k -n 2"
-elif (( $+commands[flameshot] )); then
-  _screenshot="flameshot gui -r"
-elif (( $+commands[import] )); then
-  _screenshot="import png:-"
-fi
-if (( $+_screenshot )); then
-  screenshot () {
-    if [[ -t 1 && $# -eq 0 ]]; then
-      echo >&2 "Refused to write image to terminal."
-      return 1
-    fi
-    ${=_screenshot} "$@"
-  }
-fi
+
 (( $+commands[exa] )) && {
   xtree () {
     exa -Tl --color=always "$@" | less
@@ -584,9 +568,7 @@ clipboard2qr () { # 剪贴板数据到QR码 {{{2
   echo $data
   echo $data | qrencode -t UTF8
 }
-screen2clipboard () { # 截图到剪贴板 {{{2
-  screenshot | xclip -i -selection clipboard -t image/png
-}
+# 剪贴板图像格式互转 {{{2
 clipboard_bmp2png () { # 将剪贴板中的图片从 bmp 转到 png。QQ 会使用 bmp
   xclip -selection clipboard -o -t image/bmp | convert - png:- | xclip -i -selection clipboard -t image/png
 }
@@ -914,6 +896,10 @@ if [[ -f $_plugin ]]; then
   FAST_HIGHLIGHT[use_async]=1
 fi
 _plugin=${_zdir}/.zsh/plugins/sk-tools.zsh
+if [[ -f $_plugin ]]; then
+  . $_plugin
+fi
+_plugin=${_zdir}/.zsh/plugins/screenshot.zsh
 if [[ -f $_plugin ]]; then
   . $_plugin
 fi
