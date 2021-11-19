@@ -500,7 +500,7 @@ alias -g NN="*(oc[1])"
 alias -g NNF="*(oc[1].)"
 alias -g NND="*(oc[1]/)"
 alias -g NUL="/dev/null"
-alias -g XS='"$(xsel)"'
+alias -g XS='"$(get_primary_sel)"'
 alias -g ANYF='**/*[^~](.)'
 
 # 函数 {{{1
