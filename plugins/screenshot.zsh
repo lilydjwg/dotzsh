@@ -1,8 +1,8 @@
 # take screenshot to stdout (PNG)
 
 if [[ $XDG_SESSION_TYPE == wayland ]]; then
-  if (( $+commands[slop] && $+commands[grim] )); then
-    _screenshot="slop -l -c 255,0,255,0.15 -k -n 2 -f '%x,%y %wx%h' | grim -g - -"
+  if (( $+commands[slurp] && $+commands[grim] )); then
+    _screenshot="slurp -b ff00ff20 -B ff00ff20 -c ff00ff80 -o | grim -g - -"
   fi
   _copy_png () {
     wl-copy --type image/png
@@ -22,7 +22,7 @@ fi
 
 if (( $+_screenshot )); then
   screenshot () {
-    if [[ -t 1 && $# -eq 0 ]]; then
+    if [[ -t 1 ]]; then
       echo >&2 "Refused to write image to terminal."
       return 1
     fi
