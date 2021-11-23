@@ -500,7 +500,7 @@ alias -g NN="*(oc[1])"
 alias -g NNF="*(oc[1].)"
 alias -g NND="*(oc[1]/)"
 alias -g NUL="/dev/null"
-alias -g XS='"$(get_primary_sel)"'
+alias -g XS='"$(uniclip)"'
 alias -g ANYF='**/*[^~](.)'
 
 # 函数 {{{1
@@ -518,7 +518,7 @@ fi
 song () { find ~/音乐 -iname "*$1*" }
 mvpc () { mv -- $1 "$(echo $1|ascii2uni -a J|tr '/' '-')" } # 将以 %HH 表示的文件名改正常
 nocolor () { sed -r 's:\x1b\[[0-9;]*[mK]::g;s:[\r\x0f]::g' }
-sshpubkey () { tee < ~/.ssh/id_*.pub(om[1]) >(xsel -i) }
+sshpubkey () { tee < ~/.ssh/id_*.pub(om[1]) >(uniclip -i) }
 rmempty () { #删除空文件 {{{2
   for i; do
     [[ -f $i && ! -s $i ]] && rm $i
@@ -564,16 +564,16 @@ ptyless () {
   ptyrun "$@" | tr -d $'\x0f' | less
 }
 clipboard2qr () { # 剪贴板数据到QR码 {{{2
-  data="$(xsel)"
+  data="$(uniclip)"
   echo $data
   echo $data | qrencode -t UTF8
 }
 # 剪贴板图像格式互转 {{{2
 clipboard_bmp2png () { # 将剪贴板中的图片从 bmp 转到 png。QQ 会使用 bmp
-  xclip -selection clipboard -o -t image/bmp | convert - png:- | xclip -i -selection clipboard -t image/png
+  uniclip --clipboard -t image/bmp | convert - png:- | uniclip -i --clipboard -t image/png
 }
 clipboard_png2bmp () { # 将剪贴板中的图片从 png 转到 bmp。QQ 会使用 bmp
-  xclip -selection clipboard -o -t image/png | convert - bmp:- | xclip -i -selection clipboard -t image/bmp
+  uniclip --clipboard -t image/png | convert - png:- | uniclip -i --clipboard -t image/bmp
 }
 mvgb () { # 文件名从 GB 转码，带确认{{{2
   for i in $*; do
