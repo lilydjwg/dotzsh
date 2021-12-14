@@ -432,7 +432,7 @@ done
 EOF
 }
 
-alias nicest="nice -n19 ionice -c3"
+alias nicest="chrt -i 0 ionice -c3"
 alias ren="vim +'Ren'"
 # --inplace has issues with -H https://lists.opensuse.org/opensuse-bugs/2012-10/msg02084.html
 alias xcp="rsync -aviHAXKhS --one-file-system --partial --info=progress2 --atimes --open-noatime --delete --exclude='*~' --exclude=__pycache__"
