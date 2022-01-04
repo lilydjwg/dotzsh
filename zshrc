@@ -573,7 +573,7 @@ clipboard_bmp2png () { # 将剪贴板中的图片从 bmp 转到 png。QQ 会使�
   uniclip --clipboard -t image/bmp | convert - png:- | uniclip -i --clipboard -t image/png
 }
 clipboard_png2bmp () { # 将剪贴板中的图片从 png 转到 bmp。QQ 会使用 bmp
-  uniclip --clipboard -t image/png | convert - png:- | uniclip -i --clipboard -t image/bmp
+  uniclip --clipboard -t image/png | convert - bmp:- | uniclip -i --clipboard -t image/bmp
 }
 mvgb () { # 文件名从 GB 转码，带确认{{{2
   for i in $*; do
