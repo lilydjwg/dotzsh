@@ -113,6 +113,7 @@ unset _cache_dir
 # complete user-commands for git-*
 # https://pbrisbin.com/posts/deleting_git_tags_with_style/
 zstyle ':completion:*:*:git:*' user-commands ${${(M)${(k)commands}:#git-*}/git-/}
+zstyle ':completion:*:*:git:*' user-commands subrepo:'perform git-subrepo operations'
 
 compdef pkill=killall
 compdef pgrep=killall
@@ -848,8 +849,6 @@ AUTOJUMP_KEEP_SYMLINKS=1
 export LESS="-FRXM"
 # default has -S
 export SYSTEMD_LESS="${LESS#-}K"
-# git-subrepo completer needs this:
-GIT_SUBREPO_ROOT=/
 
 # 其它 {{{1
 
