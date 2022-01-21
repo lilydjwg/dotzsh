@@ -454,6 +454,10 @@ mpv () {
   fi
 }
 
+if (( $+commands[uniclip] )); then
+  alias xs="uniclip"
+fi
+
 # for systemd {{{3
 alias sysuser="systemctl --user"
 function juser () {
