@@ -496,7 +496,6 @@ function juser () {
 hash -d tmp="$HOME/tmpfs"
 hash -d py="$HOME/scripts/python"
 hash -d ff="$HOME/.mozilla/firefox/nightly"
-hash -d target="$HOME/.cache/rust-target"
 
 # 全局别名 {{{2
 # 当前目录下最后修改的文件
