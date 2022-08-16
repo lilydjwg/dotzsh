@@ -471,25 +471,20 @@ function juser () {
       if [[ $nextIsService -eq 1 ]]; then
         nextIsService=0
         isfirst=1
-        for g in $(journalctl --user -F _SYSTEMD_CGROUP|command grep -P "^/user\\.slice/user-$UID\\.slice/user@$UID\\.service/app.slice/$i\."); do
-          if [[ isfirst -eq 1 ]]; then
-            args=($args _SYSTEMD_CGROUP=$g)
-          else
-            args=($args + _SYSTEMD_CGROUP=$g)
-          fi
-          isfirst=0
-        done
+        if [[ $i != *.* ]]; then
+          i=$i.service
+        fi
         if [[ isfirst -eq 1 ]]; then
-          args=($args USER_UNIT=$i.service)
+          args=($args USER_UNIT=$i + _SYSTEMD_USER_UNIT=$i)
         else
-          args=($args + USER_UNIT=$i.service)
+          args=($args + USER_UNIT=$i + _SYSTEMD_USER_UNIT=$i)
         fi
       else
         args=($args $i)
       fi
     fi
   done
-  journalctl -n $((${LINES:=40} - 4)) --user ${^args}
+  journalctl --user ${^args}
 }
 
 # 路径别名 {{{2
