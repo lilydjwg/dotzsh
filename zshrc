@@ -911,7 +911,7 @@ if [[ -f $_plugin ]]; then
   bindkey "\eb" zsh-edit-backward-subword
   bindkey "\ef" zsh-edit-forward-subword
   bindkey "^w" zsh-edit-backward-kill-subword
-  bindkey "\ed" zsh-edit-forward-kill-subword
+  bindkey "\ed" zsh-edit-kill-subword
 fi
 unset _plugin
 
