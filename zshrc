@@ -290,6 +290,7 @@ unfunction zsh-word-movement
 bindkey "\eB" zsh-backward-word
 bindkey "\eF" zsh-forward-word
 bindkey "\eW" zsh-backward-kill-word
+bindkey "\eD" zsh-kill-word
 # Esc-Esc 在当前/上一条命令前插入 sudo {{{2
 sudo-command-line() {
     [[ -z $BUFFER ]] && zle up-history
@@ -899,6 +900,18 @@ fi
 _plugin=${_zdir}/.zsh/plugins/screenshot.zsh
 if [[ -f $_plugin ]]; then
   . $_plugin
+fi
+_plugin=${_zdir}/.zsh/functions/zsh-edit-subword
+if [[ -f $_plugin ]]; then
+  autoload -Uz zsh-edit-subword
+  for widget in zsh-edit-{{back,for}ward,{backward-,}kill}-{sub,shell-}word; do
+    zle -N "$widget" zsh-edit-subword
+  done
+  zstyle ":edit:*" word-chars ''
+  bindkey "\eb" zsh-edit-backward-subword
+  bindkey "\ef" zsh-edit-forward-subword
+  bindkey "^w" zsh-edit-backward-kill-subword
+  bindkey "\ed" zsh-edit-forward-kill-subword
 fi
 unset _plugin
 
