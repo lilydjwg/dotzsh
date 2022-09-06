@@ -775,10 +775,6 @@ REPORTTIME=5
     "  CPU:  $blue%P$rst"$'\t'"Mem:    $blue%M MiB$rst")
 }
 
-# TeX{{{2
-export TEXMFCACHE=${XDG_CACHE_HOME:-$HOME/.cache}
-export OSFONTDIR=$HOME/.fonts:/usr/share/fonts/TTF
-
 # gstreamer mp3 标签中文设置{{{2
 export GST_ID3_TAG_ENCODING=GB18030:UTF-8
 export GST_ID3V2_TAG_ENCODING=GB18030:UTF-8
