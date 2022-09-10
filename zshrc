@@ -343,6 +343,7 @@ alias :q="exit"
 alias girl=man
 alias woman=man
 alias 7z="7z '-xr!*~' '-xr!*.swp'"
+alias pvv="pv -F '%N %b %t cur %r avg %a %p %e'"
 (( $+commands[zhcon] )) && alias zhcon="zhcon --utf8"
 (( $+commands[rlwrap] )) && {
   (( $+commands[ilua] )) && alias ilua='rlwrap ilua'
