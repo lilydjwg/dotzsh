@@ -434,6 +434,13 @@ for key in "${validpgpkeys[@]}"; do
 done
 EOF
 }
+if (( $+commands[npm] )); then
+  alias npm="bwrap --unshare-all --share-net --die-with-parent \
+    --ro-bind / / --tmpfs ~ --tmpfs /tmp --tmpfs /var/tmp --dev /dev \
+    --ro-bind ~/.npmrc ~/.npmrc --bind ~/.cache/npm ~/.cache/npm \
+    --bind $PWD $PWD \
+    npm"
+fi
 
 alias nicest="chrt -i 0 ionice -c3"
 alias ren="vim +'Ren'"
