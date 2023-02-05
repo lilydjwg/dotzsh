@@ -439,7 +439,7 @@ if (( $+commands[npm] )); then
     --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
     --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64 \
     --ro-bind ~/.npmrc ~/.npmrc --bind ~/.cache/npm ~/.cache/npm \
-    --bind $PWD $PWD \
+    --bind \$PWD \$PWD \
     npm"
 fi
 
