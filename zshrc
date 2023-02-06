@@ -897,7 +897,7 @@ if [[ -f $_plugin ]]; then
   . $_plugin
 fi
 _plugin=${_zdir}/.zsh/functions/zsh-edit-subword
-if [[ -f $_plugin ]]; then
+if [[ -f $_plugin && -z $SUDO_USER ]]; then
   autoload -Uz zsh-edit-subword
   for widget in zsh-edit-{{back,for}ward,{backward-,}kill}-{sub,shell-}word; do
     zle -N "$widget" zsh-edit-subword
