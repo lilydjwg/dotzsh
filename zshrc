@@ -5,7 +5,9 @@ HISTSIZE=10000
 SAVEHIST=10000
 
 zstyle :compinstall filename "$_zdir/.zshrc"
-fpath=($_zdir/.zsh/Completion $_zdir/.zsh/functions $fpath)
+if [[ -z $SUDO_UID ]]; then
+  fpath=($_zdir/.zsh/Completion $_zdir/.zsh/functions $fpath)
+fi
 autoload -Uz compinit
 compinit
 
@@ -123,7 +125,6 @@ compdef rlwrap=command
 compdef ptyless=command
 compdef grc=command
 compdef rgg=rg 2>/dev/null
-compdef downgrade=pactree 2>/dev/null
 # not only pdf files
 compdef -d evince
 compdef _gnu_generic exa pamixer
@@ -407,7 +408,7 @@ _makepkg_prefix=(
   --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp
   --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64
   --ro-bind /var/lib/pacman /var/lib/pacman --ro-bind ~/.ccache ~/.ccache --bind ~/.cache ~/.cache
-  --bind ~/.makepkg/gnupg "$HOME/.gnupg"
+  --bind ~/.makepkg/gnupg ~/.gnupg
   # work around https://github.com/containers/bubblewrap/issues/395#issuecomment-771159189
   --setenv FAKEROOTDONTTRYCHOWN 1
 )
@@ -455,13 +456,13 @@ alias with-github-name='GIT_COMMITTER_NAME=依云 GIT_COMMITTER_EMAIL=lilydjwg@g
 
 compdef mpv=mpv 2>/dev/null
 mpv () {
-  if [[ -z $WAYLAND_DISPLAY && -n $DISPLAY ]]; then
+  # if [[ -z $WAYLAND_DISPLAY && -n $DISPLAY ]]; then
     # or too big
     command mpv --no-hidpi-window-scale "$@"
-  else
+  # else
     # or blurry
-    command mpv "$@"
-  fi
+  #   command mpv "$@"
+  # fi
 }
 
 if (( $+commands[uniclip] )); then
