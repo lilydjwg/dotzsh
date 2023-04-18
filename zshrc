@@ -20,7 +20,6 @@ elif [[ $OS == "Darwin" ]]; then
 fi
 # check first, or the script will end wherever it fails
 zmodload zsh/regex 2>/dev/null && _has_re=1 || _has_re=0
-unsetopt nomatch
 zmodload zsh/subreap 2>/dev/null && subreap
 # 选项设置{{{1
 unsetopt beep
@@ -927,7 +926,6 @@ fi
 [[ -f $_zdir/.zsh/zshrc.local.after ]] && source $_zdir/.zsh/zshrc.local.after
 
 unset OS
-setopt nomatch
 return 0
 
 # Public link: https://github.com/lilydjwg/dotzsh
