@@ -404,7 +404,7 @@ fi
 
 _makepkg_prefix=(
   bwrap --unshare-all --share-net --die-with-parent
-  --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp
+  --ro-bind /usr /usr --ro-bind /opt /opt --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp
   --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64
   --ro-bind /var/lib/pacman /var/lib/pacman --ro-bind ~/.ccache ~/.ccache --bind ~/.cache ~/.cache
   --bind ~/.makepkg/gnupg ~/.gnupg
