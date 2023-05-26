@@ -2,4 +2,4 @@
 typeset prefix='http_proxy=http://localhost: https_proxy=$http_proxy'
 
 BUFFER="$prefix $BUFFER"
-(( CURSOR = 21 ))
+(( CURSOR = 28 ))
