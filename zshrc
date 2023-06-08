@@ -698,7 +698,8 @@ if (( $+commands[git] )); then
     _set_current_branch () {
       _current_branch=
       [[ -n $vcs_info_fd ]] && zle -F $vcs_info_fd
-      cwd=$(pwd -P)
+      # on NFS this will print an error: "Failed to get current directory: path invalid"
+      cwd=$(pwd -P 2>/dev/null)
       for p in $_nogit_dir; do
         if [[ $cwd == $p* ]]; then
           return
