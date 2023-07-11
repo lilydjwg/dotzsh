@@ -806,6 +806,8 @@ export LESS_TERMCAP_se=$'\x1b[0m'
 export LESS_TERMCAP_so=$'\x1b[7m'
 export LESS_TERMCAP_ue=$'\x1b[0m'
 export LESS_TERMCAP_us=$'\x1b[04;38;5;146m'
+# man 手册支持彩色
+export GROFF_NO_SGR=1
 
 if [[ $TERM == linux ]]; then
   _256colors=0
