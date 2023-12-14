@@ -411,18 +411,20 @@ _makepkg_prefix=(
   # work around https://github.com/containers/bubblewrap/issues/395#issuecomment-771159189
   --setenv FAKEROOTDONTTRYCHOWN 1
 )
-makepkg () {
+_makepkg_setup () {
   mkdir -m 700 -p ~/.makepkg/gnupg
-  ${_makepkg_prefix[@]} --bind $PWD $PWD /usr/bin/makepkg "$@"
+  # ${_makepkg_prefix[@]} --bind $PWD $PWD "$@"
+  ${_makepkg_prefix[@]} --bind $PWD /build --chdir /build "$@"
+}
+makepkg () {
+  _makepkg_setup /usr/bin/makepkg "$@"
 }
 compdef makepkg=makepkg
 updpkgsums () {
-  mkdir -m 700 -p ~/.makepkg/gnupg
-  ${_makepkg_prefix[@]} --bind $PWD $PWD /usr/bin/updpkgsums
+  _makepkg_setup /usr/bin/updpkgsums
 }
 makepkg-recvkeys () {
-  mkdir -m 700 -p ~/.makepkg/gnupg
-  ${_makepkg_prefix[@]} --bind $PWD $PWD /usr/bin/bash <<'EOF'
+  _makepkg_setup /usr/bin/bash <<'EOF'
 . /usr/share/makepkg/util.sh
 . ./PKGBUILD
 for key in "${validpgpkeys[@]}"; do
@@ -434,6 +436,7 @@ for key in "${validpgpkeys[@]}"; do
 done
 EOF
 }
+
 if (( $+commands[npm] )); then
   alias npm="bwrap --unshare-all --share-net --die-with-parent \
     --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
