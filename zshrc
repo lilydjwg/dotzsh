@@ -233,8 +233,12 @@ bindkey -M viins "^x^h" commit-to-history
 bindkey -M emacs "^x^h" commit-to-history
 
 () {
-  for name in /usr/share/zsh/functions/Misc/run-help-*; do
-    autoload -Uz $name:t
+  setopt localoptions nonomatch
+  local p name
+  for p in $fpath; do
+    for name in $p/run-help-*; do
+      autoload -Uz $name:t
+    done
   done
 }
 
