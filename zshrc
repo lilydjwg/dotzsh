@@ -233,7 +233,7 @@ bindkey -M viins "^x^h" commit-to-history
 bindkey -M emacs "^x^h" commit-to-history
 
 () {
-  setopt localoptions nonomatch
+  setopt localoptions nullglob
   local p name
   for p in $fpath; do
     for name in $p/run-help-*; do
