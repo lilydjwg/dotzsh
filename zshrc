@@ -410,7 +410,7 @@ _makepkg_prefix=(
   bwrap --unshare-all --share-net --die-with-parent
   --ro-bind /usr /usr --ro-bind /opt /opt --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp
   --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64
-  --ro-bind /var/lib/pacman /var/lib/pacman --ro-bind ~/.ccache ~/.ccache --bind ~/.cache ~/.cache
+  --ro-bind /var/lib/pacman /var/lib/pacman --bind ~/.cache ~/.cache
   --bind ~/.makepkg/gnupg ~/.gnupg
   # work around https://github.com/containers/bubblewrap/issues/395#issuecomment-771159189
   --setenv FAKEROOTDONTTRYCHOWN 1
