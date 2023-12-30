@@ -202,6 +202,7 @@ bindkey "^Xp" prefix-proxy
 
 zmodload zsh/complist
 bindkey -M menuselect '^O' accept-and-infer-next-history
+bindkey "^Xo" accept-and-infer-next-history
 
 bindkey "^X^I" complete-file
 bindkey "^X^f" complete-file
