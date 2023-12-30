@@ -918,6 +918,10 @@ if [[ -f $_plugin && -z $SUDO_USER ]]; then
   bindkey "^w" zsh-edit-backward-kill-subword
   bindkey "\ed" zsh-edit-kill-subword
 fi
+_plugin=${_zdir}/.zsh/plugins/atuin.zsh
+if [[ -f $_plugin && $+commands[atuin] ]]; then
+  . $_plugin
+fi
 unset _plugin
 
 # 共用账户时的定制
