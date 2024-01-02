@@ -15,19 +15,18 @@ __cursor_pos () {
   print $match[1] $match[2]
 }
 
-__calc_height () {
+__calc_placement () {
   local pos
   typeset -i height left want
   pos=($(__cursor_pos))
   left=$(( LINES - pos[1] ))
   want=$(( LINES * 0.4 ))
   if (( left > want )); then
-    height=$left
+    height=$((left + 1)) # the prompt line is used too
+    print -- --inline-height $height --invert true
   else
-    height=$want
+    print -- --invert false
   fi
-  height=$(( height + 1)) # the prompt line is used too
-  print $height
 }
 
 # Source this in your ~/.zshrc
@@ -57,7 +56,7 @@ _atuin_search() {
     # swap stderr and stdout, so that the tui stuff works
     # TODO: not this
     # shellcheck disable=SC2048
-    output=$(ATUIN_SHELL_ZSH=t ATUIN_LOG=error atuin search $* -i --inline-height $(__calc_height) -- $BUFFER 3>&1 1>&2 2>&3)
+    output=$(ATUIN_SHELL_ZSH=t ATUIN_LOG=error atuin search $* -i $(__calc_placement) -- $BUFFER 3>&1 1>&2 2>&3)
 
     zle reset-prompt
 
