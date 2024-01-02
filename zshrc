@@ -920,7 +920,7 @@ if [[ -f $_plugin && -z $SUDO_USER ]]; then
   bindkey "\ed" zsh-edit-kill-subword
 fi
 _plugin=${_zdir}/.zsh/plugins/atuin.zsh
-if [[ $+commands[atuin] && -f $_plugin ]]; then
+if (( $+commands[atuin] )) && [[ -f $_plugin ]]; then
   . $_plugin
 fi
 unset _plugin
