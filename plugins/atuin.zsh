@@ -91,3 +91,4 @@ zle -N _atuin_search_widget _atuin_search
 zle -N _atuin_up_search_widget _atuin_up_search
 
 bindkey -M emacs "\esa" _atuin_search_widget
+bindkey -M emacs "\es\ea" _atuin_search_widget
