@@ -73,14 +73,14 @@ _atuin_search() {
     if [[ -n $output ]]; then
         RBUFFER=""
         LBUFFER=$output
-    fi
 
-    if [[ $LBUFFER == __atuin_accept__:* ]]
-    then
-        LBUFFER=${LBUFFER#__atuin_accept__:}
-        zle accept-line
-    else
-        zle infer-next-history && zle up-history
+        if [[ $LBUFFER == __atuin_accept__:* ]]
+        then
+            LBUFFER=${LBUFFER#__atuin_accept__:}
+            zle accept-line
+        else
+            zle infer-next-history && zle up-history
+        fi
     fi
 }
 
