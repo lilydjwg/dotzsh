@@ -32,12 +32,16 @@ __calc_placement () {
 # Source this in your ~/.zshrc
 autoload -U add-zsh-hook
 
+zmodload zsh/datetime 2>/dev/null
+
 export ATUIN_SESSION=$(atuin uuid)
+ATUIN_HISTORY_ID=""
 
 _atuin_preexec() {
     local id
     id=$(atuin history start -- "$1")
     export ATUIN_HISTORY_ID="$id"
+    __atuin_preexec_time=${EPOCHREALTIME-}
 }
 
 _atuin_precmd() {
@@ -45,7 +49,12 @@ _atuin_precmd() {
 
     [[ -z "${ATUIN_HISTORY_ID:-}" ]] && return
 
-    (ATUIN_LOG=error atuin history end --exit $EXIT -- $ATUIN_HISTORY_ID &) >/dev/null 2>&1
+    local duration=""
+    if [[ -n $__atuin_preexec_time && -n $__atuin_precmd_time ]]; then
+        printf -v duration %.0f $(((__atuin_precmd_time - __atuin_preexec_time) * 1000000000))
+    fi
+
+    (ATUIN_LOG=error atuin history end --exit $EXIT ${duration:+--duration=$duration} -- $ATUIN_HISTORY_ID &) >/dev/null 2>&1
     export ATUIN_HISTORY_ID=""
 }
 
@@ -55,6 +64,7 @@ _atuin_search() {
 
     # swap stderr and stdout, so that the tui stuff works
     # TODO: not this
+    local output
     # shellcheck disable=SC2048
     output=$(ATUIN_SHELL_ZSH=t ATUIN_LOG=error atuin search $* -i $(__calc_placement) -- $BUFFER 3>&1 1>&2 2>&3)
 
