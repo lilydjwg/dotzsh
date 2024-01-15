@@ -34,13 +34,11 @@ autoload -U add-zsh-hook
 
 zmodload zsh/datetime 2>/dev/null
 
-export ATUIN_SESSION=$(atuin uuid)
+ATUIN_SESSION=$(atuin uuid)
 ATUIN_HISTORY_ID=""
 
 _atuin_preexec() {
-    local id
-    id=$(atuin history start -- "$1")
-    export ATUIN_HISTORY_ID="$id"
+    ATUIN_HISTORY_ID=$(ATUIN_SESSION=$ATUIN_SESSION atuin history start -- "$1")
     __atuin_preexec_time=${EPOCHREALTIME-}
 }
 
@@ -54,8 +52,8 @@ _atuin_precmd() {
         printf -v duration %.0f $(((__atuin_precmd_time - __atuin_preexec_time) * 1000000000))
     fi
 
-    (ATUIN_LOG=error atuin history end --exit $EXIT ${duration:+--duration=$duration} -- $ATUIN_HISTORY_ID &) >/dev/null 2>&1
-    export ATUIN_HISTORY_ID=""
+    (ATUIN_LOG=error ATUIN_SESSION=$ATUIN_SESSION atuin history end --exit $EXIT ${duration:+--duration=$duration} -- $ATUIN_HISTORY_ID &) >/dev/null 2>&1
+    ATUIN_HISTORY_ID=""
 }
 
 _atuin_search() {
@@ -66,7 +64,7 @@ _atuin_search() {
     # TODO: not this
     local output
     # shellcheck disable=SC2048
-    output=$(ATUIN_SHELL_ZSH=t ATUIN_LOG=error atuin search $* -i $(__calc_placement) -- $BUFFER 3>&1 1>&2 2>&3)
+    output=$(ATUIN_SHELL_ZSH=t ATUIN_LOG=error ATUIN_SESSION=$ATUIN_SESSION atuin search $* -i $(__calc_placement) -- $BUFFER 3>&1 1>&2 2>&3)
 
     zle reset-prompt
 
