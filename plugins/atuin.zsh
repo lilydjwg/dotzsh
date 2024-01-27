@@ -21,12 +21,16 @@ __calc_placement () {
   pos=($(__cursor_pos))
   left=$(( LINES - pos[1] ))
   want=$(( LINES * 0.4 ))
-  if (( left > want )); then
-    height=$((left + 1)) # the prompt line is used too
-    print -- --inline-height $height --invert true
+  if (( left < want )); then
+    height=$((want + 1)) # the prompt line is used too
+    {
+      printf '\n%.0s' {1..$want}
+      printf '\e[%dA' $want
+    } >/dev/tty
   else
-    print -- --invert false
+    height=$((left + 1))
   fi
+  print -- --inline-height $height --invert true
 }
 
 # Source this in your ~/.zshrc
