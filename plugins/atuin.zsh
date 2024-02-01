@@ -47,7 +47,7 @@ _atuin_preexec() {
 }
 
 _atuin_precmd() {
-    local EXIT="$?"
+    local EXIT="$?" __atuin_precmd_time=${EPOCHREALTIME-}
 
     [[ -z "${ATUIN_HISTORY_ID:-}" ]] && return
 
@@ -89,7 +89,7 @@ _atuin_search() {
 _atuin_up_search() {
     # Only trigger if the buffer is a single line
     if [[ ! $BUFFER == *$'\n'* ]]; then
-        _atuin_search --shell-up-key-binding
+        _atuin_search --shell-up-key-binding "$@"
     else
         zle up-line
     fi
