@@ -68,6 +68,7 @@ _atuin_search() {
     # TODO: not this
     local output
     # shellcheck disable=SC2048
+    setopt localoptions nonotify
     output=$(ATUIN_SHELL_ZSH=t ATUIN_LOG=error ATUIN_SESSION=$ATUIN_SESSION atuin search $* -i $(__calc_placement) -- $BUFFER 3>&1 1>&2 2>&3)
 
     zle reset-prompt
