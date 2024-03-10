@@ -69,7 +69,7 @@ _atuin_search() {
     local output
     # shellcheck disable=SC2048
     setopt localoptions nonotify
-    output=$(ATUIN_SHELL_ZSH=t ATUIN_LOG=main=error atuin search $* -i $(__calc_placement) -- $BUFFER 3>&1 1>&2 2>&3)
+    output=$(ATUIN_SHELL_ZSH=t ATUIN_LOG=error atuin search $* -i $(__calc_placement) -- $BUFFER 3>&1 1>&2 2>&3)
 
     zle reset-prompt
 
@@ -99,9 +99,8 @@ _atuin_up_search() {
 add-zsh-hook preexec _atuin_preexec
 add-zsh-hook precmd _atuin_precmd
 
-zle -N _atuin_search_widget _atuin_search
-zle -N _atuin_up_search_widget _atuin_up_search
+zle -N atuin-search _atuin_search
 
 bindkey -M emacs "\esa" sk-search-history
 bindkey -M emacs "\es\ea" sk-search-history
-bindkey -M emacs "\esr" _atuin_search_widget
+bindkey -M emacs "\esr" atuin-search
