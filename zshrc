@@ -218,7 +218,7 @@ bindkey '^[w' kill-region
 # 用单引号引起最后一个单词
 bindkey -s "^['" "^[] ^f^@^e^[\""
 # 打开 zsh 的PDF格式文档
-bindkey -s "^X^D" "evince ~/文档/编程/shell/zsh/zsh.pdf &^M"
+bindkey -s "^X^D" "evince /usr/share/doc/zsh/zsh.pdf &^M"
 bindkey -s "^Xc" "tmux attach -d^M"
 
 bindkey '^[p' up-line-or-search
