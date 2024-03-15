@@ -90,10 +90,6 @@ if (( $+commands[sk] )); then
     vv-mru () { sk-vim-mru vv }
     bindkey -s "\esv" "vv-mru^M"
   fi
-
-  if [[ -f /usr/share/skim/completion.zsh ]]; then
-    . /usr/share/skim/completion.zsh
-  fi
 fi
 
 # vim: se ft=zsh:
