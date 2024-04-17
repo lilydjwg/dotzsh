@@ -107,9 +107,7 @@ zstyle -e ':completion:*' special-dirs \
   '[[ $PREFIX == (../)#(|.|..) ]] && reply=(..)'
 # 使用缓存。某些命令的补全很耗时的（如 aptitude）
 zstyle ':completion:*' use-cache on
-_cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/zsh
-zstyle ':completion:*' cache-path $_cache_dir
-unset _cache_dir
+zstyle ':completion:*' cache-path ${XDG_CACHE_HOME:-$HOME/.cache}/zsh
 
 # complete user-commands for git-*
 # https://pbrisbin.com/posts/deleting_git_tags_with_style/
