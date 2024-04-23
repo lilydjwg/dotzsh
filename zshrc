@@ -440,14 +440,12 @@ done
 EOF
 }
 
-if (( $+commands[npm] )); then
-  alias npm="bwrap --unshare-all --share-net --die-with-parent \
-    --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
-    --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64 \
-    --ro-bind ~/.npmrc ~/.npmrc --bind ~/.cache/npm ~/.cache/npm \
-    --bind \$PWD \$PWD \
-    npm"
-fi
+alias npm="bwrap --unshare-all --share-net --die-with-parent \
+  --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
+  --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64 \
+  --ro-bind ~/.npmrc ~/.npmrc --bind ~/.cache/npm ~/.cache/npm \
+  --bind \$PWD \$PWD \
+  npm"
 
 alias nicest="chrt -i 0 ionice -c3"
 alias ren="vim +'Ren'"
