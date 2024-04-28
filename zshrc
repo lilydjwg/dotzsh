@@ -641,15 +641,6 @@ try_until_success () { #反复重试，直到成功 {{{2
   done
 }
 compdef try_until_success=command
-install_autojump () { # autojump 快速安装 {{{2
-  mkdir -p ~/.local/bin ${_zdir}/.zsh/Completion
-  pushd ~/.local/bin > /dev/null
-  wget -N https://github.com/wting/autojump/raw/master/bin/autojump{,_{data,argparse,match,utils}.py}
-  chmod +x autojump
-  popd > /dev/null
-  wget https://github.com/wting/autojump/raw/master/bin/autojump.zsh -O ${_zdir}/.zsh/autojump.zsh
-  wget https://github.com/wting/autojump/raw/master/bin/_j -O ${_zdir}/.zsh/Completion/_j
-}
 wait_pid () { # {{{2
   local pid=$1
   while true; do
@@ -846,25 +837,12 @@ elif [[ $OS = FreeBSD ]]; then
 fi
 
 # 其它程序 {{{2
-AUTOJUMP_KEEP_SYMLINKS=1
 export LESS="-FRXM"
 # default has -S
 export SYSTEMD_LESS="${LESS#-}K"
 
 # 其它 {{{1
 
-# When starting as a non-login shell
-[[ -z $functions[j] && -f /etc/profile.d/autojump.zsh ]] && source /etc/profile.d/autojump.zsh
-# Debian Wheezy
-[[ -z $functions[j] && -f /usr/share/autojump/autojump.zsh ]] && source /usr/share/autojump/autojump.zsh
-# FreeBSD
-[[ -z $functions[j] && -f /usr/local/share/autojump/autojump.zsh ]] && source /usr/local/share/autojump/autojump.zsh
-[[ -z $functions[j] && -f ${_zdir}/.zsh/autojump.zsh ]] && source ${_zdir}/.zsh/autojump.zsh
-# if autojump loads but the directory is readonly, remove the chpwd hook
-if [[ ${chpwd_functions[(i)autojump_chpwd]} -le ${#chpwd_functions} && \
-  -d ~/.local/share/autojump && ! -w ~/.local/share/autojump ]]; then
-  chpwd_functions[(i)autojump_chpwd]=()
-fi
 if (( $+commands[zoxide] )) && [[ ! -f ~/.local/share/zoxide/db.zo || $(zstat +uid ~/.local/share/zoxide/db.zo) == $UID ]]; then
   eval "$(zoxide init zsh)"
   function z () {
