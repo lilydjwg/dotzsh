@@ -457,17 +457,6 @@ alias pkg-check='comm -23 <(pacman -Qettq|sort) <(awk ''{print $1}'' ~/etc/pkg-w
 alias pkg-check-old='comm -13 <(pacman -Qq|sort) <(awk ''$1 != "#" {print $1}'' ~/etc/pkg-why|sort)'
 alias with-github-name='GIT_COMMITTER_NAME=依云 GIT_COMMITTER_EMAIL=lilydjwg@gmail.com GIT_AUTHOR_NAME=依云 GIT_AUTHOR_EMAIL=lilydjwg@gmail.com'
 
-compdef mpv=mpv 2>/dev/null
-mpv () {
-  # if [[ -z $WAYLAND_DISPLAY && -n $DISPLAY ]]; then
-    # or too big
-    command mpv --no-hidpi-window-scale "$@"
-  # else
-    # or blurry
-  #   command mpv "$@"
-  # fi
-}
-
 if (( $+commands[uniclip] )); then
   alias xs="uniclip"
 fi
