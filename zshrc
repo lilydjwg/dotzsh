@@ -314,7 +314,7 @@ sudo-command-line() {
 }
 zle -N sudo-command-line
 bindkey "\e\e" sudo-command-line
-# 插入当前的所有补全 https://www.zsh.org/mla/workers/2020/index.html {{{2
+# 插入当前的所有补全 https://www.zsh.org/mla/workers/2020/msg01232.html {{{2
 zstyle ':completion:all-matches::::' completer _all_matches _complete
 zstyle ':completion:all-matches:*' old-matches true
 zstyle ':completion:all-matches:*' insert true
