@@ -31,13 +31,13 @@ __is_light_background_fix () {
 }
 
 sk_extra_args () {
-  if __is_light_background; then
+  if __is_light_background_fix; then
     echo "--color=light"
   fi
 }
 
 mutt () {
-  if __is_light_background; then
+  if __is_light_background_fix; then
     command mutt -F ~/.muttrc.eink "$@"
   else
     command mutt "$@"
