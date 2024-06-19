@@ -886,6 +886,10 @@ _plugin=${_zdir}/.zsh/plugins/atuin.zsh
 if (( $+commands[atuin] )) && [[ -f $_plugin ]]; then
   . $_plugin
 fi
+_plugin=${_zdir}/.zsh/bgdep.zsh
+if [[ -f $_plugin ]]; then
+  . $_plugin
+fi
 unset _plugin
 
 # 共用账户时的定制
