@@ -353,7 +353,6 @@ alias pvv="pv -F '%N %b %t cur %r avg %a %p %e'"
 }
 (( $+commands[irb] )) && alias irb='irb -r irb/completion'
 (( $+commands[ccal] )) && alias ccal='ccal -ub'
-(( $+commands[zbarcam] )) && alias zbarcam='LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam'
 if (( $+commands[plocate] )); then
   mylocate=plocate
 else
