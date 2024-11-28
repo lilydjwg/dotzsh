@@ -377,6 +377,8 @@ fi
   }
 }
 
+(( $+commands[ip] )) || alias ip="ip -c"
+
 # grc aliases
 if (( $+aliases[colourify] )); then
   # default is better
