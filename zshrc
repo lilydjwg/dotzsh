@@ -378,6 +378,8 @@ fi
 }
 
 (( $+commands[ip] )) && alias ip="ip -c"
+(( $+commands[ffprobe] )) && alias ffprobe="ffprobe -hide_banner"
+(( $+commands[ffmpeg] )) && alias ffmpeg="ffmpeg -hide_banner"
 
 # grc aliases
 if (( $+aliases[colourify] )); then
