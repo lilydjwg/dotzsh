@@ -455,7 +455,7 @@ cargo-build () {
   bwrap --unshare-all --die-with-parent \
     --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
     --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64 \
-    --bind ~/.cargo ~/.cargo --bind ~target ~target \
+    --bind ~/.cargo ~/.cargo --bind-try ~/.rustup ~/.rustup --bind ~target ~target \
     --bind $PWD $PWD \
     cargo build "$@"
 }
