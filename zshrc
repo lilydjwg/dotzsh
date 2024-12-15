@@ -451,7 +451,7 @@ alias npm="bwrap --unshare-all --share-net --die-with-parent \
   npm"
 
 cargo-build () {
-  cargo fetch
+  cargo fetch --target x86_64-unknown-linux-gnu
   bwrap --unshare-all --die-with-parent \
     --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
     --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64 \
