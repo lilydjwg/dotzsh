@@ -443,12 +443,20 @@ done
 EOF
 }
 
-alias npm="bwrap --unshare-all --share-net --die-with-parent \
-  --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
-  --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64 \
-  --ro-bind ~/.npmrc ~/.npmrc --bind ~/.cache/npm ~/.cache/npm \
-  --bind \$PWD \$PWD \
-  npm"
+if (( $+commands[npm] )); then
+  alias npm="bwrap --unshare-all --share-net --die-with-parent \
+    --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
+    --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64 \
+    --ro-bind ~/.npmrc ~/.npmrc --bind ~/.cache/npm ~/.cache/npm \
+    --bind \$PWD \$PWD \
+    npm"
+  alias npx="bwrap --unshare-all --share-net --die-with-parent \
+    --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
+    --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64 \
+    --ro-bind ~/.npmrc ~/.npmrc --bind ~/.cache/npm ~/.cache/npm \
+    --bind \$PWD \$PWD \
+    npx"
+fi
 
 cargo-build () {
   cargo fetch --target x86_64-unknown-linux-gnu
