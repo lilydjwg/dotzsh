@@ -136,8 +136,8 @@ zstyle ':completion:*:*:evince:*' file-patterns \
 zstyle ':completion:*:*:gbkunzip:*' file-patterns '*.zip:zip-files:zip\ files *(-/):directories:directories'
 zstyle ':completion:*:*:flashplayer:*' file-patterns '*.swf'
 zstyle ':completion:*:*:hp2ps:*' file-patterns '*.hp'
-zstyle ':completion:*:*:feh:*' file-patterns '*.{png,gif,jpg,svg}:images:images *(-/):directories:directories'
 zstyle ':completion:*:*:imv:*' file-patterns '*.{png,gif,jpg,svg,tiff,psd}:images:images *(-/):directories:directories'
+zstyle ':completion:*:*:swayimg:*' file-patterns '*.{png,gif,jpg,svg,webp,avif,tiff,psd}:images:images *(-/):directories:directories'
 zstyle ':completion:*:*:timidity:*' file-patterns '*.mid'
 
 # .zfs handling {{{2
@@ -370,6 +370,7 @@ fi
     openssl s_client -connect $domain:443 -servername $domain <<<'' | ascii2uni -qa7
   }
 }
+(( $+commands[swayimg] )) && alias imv=swayimg
 
 (( $+commands[exa] )) && {
   xtree () {
