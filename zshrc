@@ -136,8 +136,7 @@ zstyle ':completion:*:*:evince:*' file-patterns \
 zstyle ':completion:*:*:gbkunzip:*' file-patterns '*.zip:zip-files:zip\ files *(-/):directories:directories'
 zstyle ':completion:*:*:flashplayer:*' file-patterns '*.swf'
 zstyle ':completion:*:*:hp2ps:*' file-patterns '*.hp'
-zstyle ':completion:*:*:imv:*' file-patterns '*.{png,gif,jpg,svg,tiff,psd}:images:images *(-/):directories:directories'
-zstyle ':completion:*:*:swayimg:*' file-patterns '*.{png,gif,jpg,svg,webp,avif,tiff,psd}:images:images *(-/):directories:directories'
+zstyle ':completion:*:*:swayimg:*' file-patterns '*.{png,gif,jpg,JPG,svg,webp,avif,tiff,psd}:images:images *(-/):directories:directories'
 zstyle ':completion:*:*:timidity:*' file-patterns '*.mid'
 
 # .zfs handling {{{2
