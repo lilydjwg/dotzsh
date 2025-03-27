@@ -73,7 +73,7 @@ _atuin_search() {
 
     zle reset-prompt
     # re-enable bracketed paste
-    echo $zle_bracketed_paste[1] >/dev/tty
+    echo -n $zle_bracketed_paste[1] >/dev/tty
 
     if [[ -n $output ]]; then
         RBUFFER=""
