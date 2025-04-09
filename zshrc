@@ -339,6 +339,7 @@ fi
 alias diff='diff --color=auto'
 alias n='thunar'
 alias py='python3'
+alias nb='numbat'
 alias svim="vim -i NONE"
 alias rv='EDITOR="vim --servername GVIM --remote-tab-wait"'
 alias :q="exit"
