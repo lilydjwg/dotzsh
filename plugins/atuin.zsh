@@ -7,7 +7,7 @@
 # the above line ...
 
 __cursor_pos () {
-  local pos
+  local pos tty
   exec {tty}<>/dev/tty
   echo -n '\e[6n' >&$tty; read -rsdR pos <&$tty
   exec {tty}>&-
