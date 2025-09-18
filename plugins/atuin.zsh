@@ -8,8 +8,9 @@
 
 __cursor_pos () {
   local pos tty
+  setopt localoptions no_bash_rematch no_ksh_arrays
   exec {tty}<>/dev/tty
-  echo -n '\e[6n' >&$tty; read -rsdR pos <&$tty
+  echo -ne '\e[6n' >&$tty; read -rsdR pos <&$tty
   exec {tty}>&-
   [[ $pos =~ '([0-9]+);([0-9]+)$' ]]
   print $match[1] $match[2]
