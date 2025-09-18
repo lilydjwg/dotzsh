@@ -30,7 +30,7 @@ __calc_placement () {
   else
     height=$((left + 1))
   fi
-  print -- --inline-height $height --invert true
+  print -- --inline-height $height
 }
 
 # Source this in your ~/.zshrc
