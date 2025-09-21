@@ -122,8 +122,6 @@ compdef rlwrap=command
 compdef ptyless=command
 compdef grc=command
 compdef rgg=rg 2>/dev/null
-# not only pdf files
-compdef -d evince
 compdef _gnu_generic exa pamixer
 
 # 我的自动补全 {{{2
@@ -131,7 +129,7 @@ zstyle ':completion:*:*:pdf2png:*' file-patterns \
   '*.pdf:pdf-files:pdf\ files *(-/):directories:directories'
 zstyle ':completion:*:*:x:*' file-patterns \
   '*.{7z,bz2,gz,rar,tar,tbz,tgz,zip,chm,xz,zst,exe,xpi,apk,maff,crx,deb}:compressed-files:compressed\ files *(-/):directories:directories'
-zstyle ':completion:*:*:evince:*' file-patterns \
+zstyle ':completion:*:*:papers:*' file-patterns \
   '*.{pdf,ps,eps,dvi,djvu,pdf.gz,ps.gz,dvi.gz}:documents:documents *(-/):directories:directories'
 zstyle ':completion:*:*:gbkunzip:*' file-patterns '*.zip:zip-files:zip\ files *(-/):directories:directories'
 zstyle ':completion:*:*:flashplayer:*' file-patterns '*.swf'
