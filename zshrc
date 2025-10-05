@@ -390,23 +390,6 @@ if (( $+aliases[colourify] )); then
   unalias ping    2>/dev/null || true
 fi
 
-# for systemd 230+
-# see https://github.com/tmux/tmux/issues/428
-if [[ $_has_re -eq 1 ]] && \
-  (( $+commands[tmux] )) && (( $+commands[systemctl] )); then
-  [[ $(systemctl --version) =~ 'systemd ([0-9]+)' ]] || true
-  if [[ $match -ge 230 ]]; then
-    tmux () {
-      if command tmux has; then
-        command tmux $@
-      else
-        systemd-run --user --scope tmux $@
-      fi
-    }
-  fi
-  unset match
-fi
-
 _makepkg_prefix=(
   bwrap --unshare-all --share-net --die-with-parent
   --ro-bind /usr /usr --ro-bind /opt /opt --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp
