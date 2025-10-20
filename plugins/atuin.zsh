@@ -70,11 +70,12 @@ _atuin_search() {
     local output
     # shellcheck disable=SC2048
     setopt localoptions nonotify
-    output=$(ATUIN_SHELL_ZSH=t ATUIN_LOG=error atuin search $* -i $(__calc_placement) -- $BUFFER 3>&1 1>&2 2>&3)
+    output=$(ATUIN_SHELL=zsh ATUIN_LOG=error ATUIN_QUERY=$BUFFER atuin search $* -i $(__calc_placement) 3>&1 1>&2 2>&3)
 
     zle reset-prompt
     # re-enable bracketed paste
-    echo -n $zle_bracketed_paste[1] >/dev/tty
+    # shellcheck disable=SC2154
+    echo -n ${zle_bracketed_paste[1]} >/dev/tty
 
     if [[ -n $output ]]; then
         RBUFFER=""
