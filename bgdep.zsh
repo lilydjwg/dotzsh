@@ -1,9 +1,21 @@
+__read_until () {
+  local s=''
+  while read -t 0.1 -rsk ch; do
+    if [[ $1 == *$ch* ]]; then
+      break
+    fi
+    s+=$ch
+  done
+  eval $2=\$s
+}
+
 __background_color () {
   local l
   exec {tty}<>/dev/tty
-  echo -n "\x1B]11;?\x07" >&$tty; read -t 0.1 -rsd $'\x07' l <&$tty
+  # gnome-terminal ends with ^G, wezterm Esc \
+  echo -n "\x1B]11;?\x07" >&$tty; __read_until $'\x07\\' l <&$tty
   exec {tty}>&-
-  [[ $l =~ 'rgb:([0-9a-fA-F]+)/([0-9a-fA-F]+)/([0-9a-fA-F]+)$' ]]
+  [[ $l =~ 'rgb:([0-9a-fA-F]+)/([0-9a-fA-F]+)/([0-9a-fA-F]+).?$' ]]
   print $(( 0x$match[1] / 0x100 )) $(( 0x$match[2] / 0x100 )) $(( 0x$match[3] / 0x100 ))
 }
 
