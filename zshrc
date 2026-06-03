@@ -767,9 +767,14 @@ REPORTTIME=5
 
 () { # TIMEFMT {{{3
   local white_b=$'\e[97m' blue=$'\e[94m' rst=$'\e[0m'
+  local m_unit=K
+  if [[ $ZSH_VERSION == 5.9 || $ZSH_VERSION =~ '^5\.[0-8]\.' || $ZSH_VERSION =~ '^[0-4]\.' ]]; then
+    # before c006d76097 fixed the unit, it was actually in MiB
+    m_unit=M
+  fi
   TIMEFMT=("== TIME REPORT FOR $white_b%J$rst =="$'\n'
     "  User: $blue%U$rst"$'\t'"System: $blue%S$rst  Total: $blue%*Es${rst}"$'\n'
-    "  CPU:  $blue%P$rst"$'\t'"Mem:    $blue%M MiB$rst")
+    "  CPU:  $blue%P$rst"$'\t'"Mem:    $blue%M ${m_unit}iB$rst")
 }
 
 # gstreamer mp3 标签中文设置{{{2
