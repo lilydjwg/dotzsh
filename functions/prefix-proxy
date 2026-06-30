@@ -1,5 +1,5 @@
 # vim:se ft=zsh:
-typeset prefix='http_proxy=http://localhost: https_proxy=$http_proxy'
+typeset prefix='http_proxy=socks5h://127.0.0.1:'
 
 BUFFER="$prefix $BUFFER"
-(( CURSOR = 28 ))
+(( CURSOR = 31 ))
