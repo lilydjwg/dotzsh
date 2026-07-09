@@ -843,11 +843,8 @@ export SYSTEMD_LESS="${LESS#-}K"
 if (( $+commands[zoxide] )) && [[ ! -f ~/.local/share/zoxide/db.zo || $(zstat +uid ~/.local/share/zoxide/db.zo) == $UID ]]; then
   eval "$(zoxide init zsh)"
   function z () {
-    if [[ "$#" -eq 0 ]]; then
-      __zoxide_z ''
-    else
-      __zoxide_z "$@"
-    fi
+    \builtin local result
+    result="$(\command zoxide query --exclude "$(__zoxide_pwd)" -- "$@")"  && __zoxide_cd "${result}"
   }
   if [[ -z $functions[j] ]]; then
     function j () {
