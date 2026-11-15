@@ -444,6 +444,7 @@ cargo-build () {
   cargo fetch --target x86_64-unknown-linux-gnu
   bwrap --unshare-all --die-with-parent \
     --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
+    --ro-bind /sys /sys \
     --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64 \
     --bind ~/.cargo ~/.cargo --bind-try ~/.rustup ~/.rustup --bind ~target ~target \
     --bind $PWD $PWD \
