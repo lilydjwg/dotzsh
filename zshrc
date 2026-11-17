@@ -393,6 +393,7 @@ fi
 _makepkg_prefix=(
   bwrap --unshare-all --share-net --die-with-parent
   --ro-bind /usr /usr --ro-bind /opt /opt --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp
+  --ro-bind /sys /sys
   --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64
   --ro-bind /var/lib/pacman /var/lib/pacman --bind ~/.cache ~/.cache
   --bind ~/.makepkg/gnupg ~/.gnupg
@@ -428,12 +429,14 @@ EOF
 if (( $+commands[npm] )); then
   alias npm="bwrap --unshare-all --share-net --die-with-parent \
     --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
+    --ro-bind /sys /sys \
     --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64 \
     --ro-bind ~/.npmrc ~/.npmrc --bind ~/.cache/npm ~/.cache/npm \
     --bind \$PWD \$PWD \
     npm"
   alias npx="bwrap --unshare-all --share-net --die-with-parent \
     --ro-bind /usr /usr --ro-bind /etc /etc --proc /proc --dev /dev --tmpfs /tmp \
+    --ro-bind /sys /sys \
     --symlink usr/bin /bin --symlink usr/bin /sbin --symlink usr/lib /lib --symlink usr/lib /lib64 \
     --ro-bind ~/.npmrc ~/.npmrc --bind ~/.cache/npm ~/.cache/npm \
     --bind \$PWD \$PWD \
